@@ -358,27 +358,19 @@ button {
     letter-spacing: 3px;
     text-transform: uppercase;
     color: rgba(255, 255, 255, 0.85);
-    margin-bottom: 28px;
+    margin-bottom: 16px;
 }
 
-.btn-confirm-hero {
-    display: inline-block;
-    padding: 14px 36px;
-    background: transparent;
-    border: 1.5px solid rgba(255, 255, 255, 0.7);
-    color: #fff;
-    font-family: var(--font-sans);
-    font-size: 0.68rem;
-    font-weight: 600;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-    border-radius: 2px;
-    transition: background var(--transition), border-color var(--transition);
-}
-
-.btn-confirm-hero:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: #fff;
+.hero-invitation-message {
+    font-family: var(--font-serif);
+    font-size: clamp(1.05rem, 4vw, 1.25rem);
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.95);
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+    max-width: 320px;
+    margin: 0 auto;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
 }
 
 /* ══════════════════════════════════════════════════════════════

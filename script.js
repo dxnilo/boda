@@ -145,6 +145,9 @@
     }
 
     function triggerWhiteDiffusionTransition() {
+        // Start background music immediately when transition begins so there's no delay
+        tryPlayMusic();
+
         if ($whiteOverlay) {
             $whiteOverlay.classList.add('active');
         }
@@ -164,7 +167,6 @@
                 $musicToggle.classList.add('visible');
             }
 
-            tryPlayMusic();
             initScrollReveal();
 
             setTimeout(() => {
