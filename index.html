@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Jean & Ana - Nuestra Boda</title>
+    <meta name="description"
+        content="Estás cordialmente invitado(a) a la boda de Jean Charris & Ana Facette. 15 de Noviembre, 2026.">
+    <meta property="og:title" content="Jean & Ana - Nos Casamos">
+    <meta property="og:description"
+        content="Estás cordialmente invitado(a) a celebrar nuestra boda. 15 de Noviembre, 2026.">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         ENVELOPE SCREEN - Fullscreen video overlay (tap anywhere to open)
+    ══════════════════════════════════════════════════════════════ -->
+    <div id="envelope-screen" class="envelope-fullscreen-screen" role="button" tabindex="0"
+        aria-label="Toca la pantalla para abrir">
+        <video id="envelope-video" class="envelope-fullscreen-video" poster="video_sobre/poster.jpg" playsinline
+            preload="auto" muted>
+            <source src="video_sobre/envelope.mp4#t=0.001" type="video/mp4">
+            <source src="video_sobre/WhatsApp%20Video%202026-09-07%20at%203.58.26%20PM.mp4#t=0.001" type="video/mp4">
+        </video>
+    </div>
+
+    <!-- White diffusion transition overlay -->
+    <div id="white-transition-overlay" class="white-transition-overlay" aria-hidden="true"></div>
+
+    <!-- Music Button -->
+    <button id="music-toggle" class="music-btn" aria-label="Reproducir/Pausar música">
+        <svg class="music-icon-play" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2">
+            <path d="M9 18V5l12-2v13" />
+            <circle cx="6" cy="18" r="3" />
+            <circle cx="18" cy="16" r="3" />
+        </svg>
+        <svg class="music-icon-pause" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" style="display:none">
+            <rect x="6" y="4" width="4" height="16" />
+            <rect x="14" y="4" width="4" height="16" />
+        </svg>
+        <div class="music-waves">
+            <span></span><span></span><span></span><span></span>
+        </div>
+    </button>
+
+    <!-- Hidden audio -->
+    <audio id="bg-music" loop preload="auto">
+        <!-- <source src="assets/music.mp3" type="audio/mpeg"> -->
+    </audio>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         MAIN INVITATION CONTENT
+    ══════════════════════════════════════════════════════════════ -->
+    <main id="invitation" class="invitation-hidden">
+
+        <!-- ─── HERO ─── -->
+        <section id="hero" class="section-hero">
+            <div class="hero-image-wrapper">
+                <div class="hero-image-overlay"></div>
+                <img src="assets/hero.jpg" alt="Jean & Ana" class="hero-image" loading="eager">
+            </div>
+            <div class="hero-content">
+                <p class="hero-getting-married reveal">NOS CASAMOS</p>
+                <h1 class="hero-names reveal">
+                    <span class="name-script">Jean</span>
+                    <span class="name-amp">&amp;</span>
+                    <span class="name-script">Ana</span>
+                </h1>
+                <div class="hero-divider-line reveal"></div>
+                <p class="hero-date reveal">15 de Noviembre, 2026</p>
+                <a href="#rsvp" class="btn-confirm-hero reveal" id="btn-confirm-hero">CONFIRMAR ASISTENCIA</a>
+            </div>
+        </section>
+
+        <!-- ─── QUOTE ─── -->
+        <section class="section-romantic-quote">
+            <div class="quote-inner reveal">
+                <p class="romantic-quote-text">Donde el amor comienza,<br>la eternidad se despliega en silencio.</p>
+            </div>
+        </section>
+
+        <!-- ─── COUNTDOWN WITH COLUMNS ─── -->
+        <section class="section-countdown-luxury">
+            <div class="countdown-columns-bg">
+                <img src="assets/golden_columns.jpg" alt="" class="columns-img" aria-hidden="true">
+            </div>
+            <div class="countdown-content">
+                <h2 class="countdown-title reveal">Cuenta Regresiva</h2>
+                <p class="countdown-subtitle reveal">Para el día más especial de nuestras vidas</p>
+                <div class="countdown-numbers reveal" id="countdown">
+                    <div class="countdown-item">
+                        <span class="count-number" id="countdown-days">000</span>
+                        <span class="count-label">DÍAS</span>
+                    </div>
+                    <div class="countdown-sep">·</div>
+                    <div class="countdown-item">
+                        <span class="count-number" id="countdown-hours">00</span>
+                        <span class="count-label">HORAS</span>
+                    </div>
+                    <div class="countdown-sep">·</div>
+                    <div class="countdown-item">
+                        <span class="count-number" id="countdown-minutes">00</span>
+                        <span class="count-label">MINUTOS</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── GLIMPSE OF US (Gallery) ─── -->
+        <section class="section-glimpse">
+            <div class="glimpse-header reveal">
+                <h2 class="glimpse-title">Nuestros Momentos</h2>
+            </div>
+            <div class="glimpse-gallery reveal">
+                <div class="glimpse-grid">
+                    <div class="glimpse-photo glimpse-photo--left">
+                        <img src="assets/gallery1.jpg" alt="Foto 1" loading="lazy">
+                    </div>
+                    <div class="glimpse-photo glimpse-photo--center">
+                        <img src="assets/gallery2.jpg" alt="Foto 2" loading="lazy">
+                    </div>
+                    <div class="glimpse-photo glimpse-photo--right">
+                        <img src="assets/gallery3.jpg" alt="Foto 3" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── OUR JOURNEY (Timeline with curtains) ─── -->
+        <section class="section-journey">
+            <div class="journey-curtains">
+                <img src="assets/golden_curtains.jpg" alt="" class="curtains-img" aria-hidden="true">
+            </div>
+            <div class="journey-content">
+                <h2 class="journey-title reveal">Nuestra Historia</h2>
+                <div class="journey-timeline">
+                    <div class="journey-item reveal">
+                        <span class="journey-year">2016</span>
+                        <h3 class="journey-event-title">Un Encuentro Especial</h3>
+                        <p class="journey-event-desc">En la Plaza de Sabanagrande, entre la alegría de un intercolegial,
+                            nuestras miradas se encontraron y una sonrisa cambió el rumbo de nuestra historia. Lo que
+                            comenzó como un instante inesperado se convirtió, con los años, en un amor que ha crecido,
+                            madurado y elegido permanecer.</p>
+                    </div>
+                    <div class="journey-divider"></div>
+                    <div class="journey-item reveal">
+                        <span class="journey-year">2021</span>
+                        <h3 class="journey-event-title">La Aventura</h3>
+                        <p class="journey-event-desc">Viajes juntos, risas infinitas, y la certeza de que somos mejores
+                            compañeros de vida el uno del otro.</p>
+                    </div>
+                    <div class="journey-divider"></div>
+                    <div class="journey-item reveal">
+                        <span class="journey-year">2025</span>
+                        <h3 class="journey-event-title">El Sí</h3>
+                        <p class="journey-event-desc">Una noche rodeados de quienes más amamos, una pregunta, un anillo
+                            y un sí que detuvo el tiempo. Desde aquel instante supimos que todos nuestros caminos habían
+                            conducido hasta allí: al momento de elegirnos, una vez más, pero esta vez para toda la vida.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── ORDER OF EVENTS ─── -->
+        <section class="section-order-events">
+            <div class="order-header reveal">
+                <p class="order-subtitle">NUESTRO DÍA ESPECIAL</p>
+                <h2 class="order-title">Orden de Eventos</h2>
+            </div>
+            <div class="order-timeline">
+                <div class="order-item reveal">
+                    <div class="order-dot">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="3" />
+                            <path
+                                d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                        </svg>
+                    </div>
+                    <div class="order-content">
+                        <span class="order-time">7:00 PM</span>
+                        <h3 class="order-event">Ceremonia</h3>
+                        <p class="order-desc">El momento más sagrado de nuestra historia</p>
+                    </div>
+                </div>
+                <div class="order-item reveal">
+                    <div class="order-dot">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <path d="M9 18V5l12-2v13" />
+                            <circle cx="6" cy="18" r="3" />
+                            <circle cx="18" cy="16" r="3" />
+                        </svg>
+                    </div>
+                    <div class="order-content">
+                        <span class="order-time">8:00 PM</span>
+                        <h3 class="order-event">Recepción</h3>
+                        <p class="order-desc">¡Que comience la celebración!</p>
+                    </div>
+                </div>
+                <div class="order-item reveal">
+                    <div class="order-dot">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
+                            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
+                        </svg>
+                    </div>
+                    <div class="order-content">
+                        <span class="order-time">9:00 PM</span>
+                        <h3 class="order-event">Primer Baile</h3>
+                        <p class="order-desc">Nuestro primer paso juntos como uno</p>
+                    </div>
+                </div>
+                <div class="order-item reveal">
+                    <div class="order-dot">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <path
+                                d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
+                            <path
+                                d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
+                        </svg>
+                    </div>
+                    <div class="order-content">
+                        <span class="order-time">12:00 AM</span>
+                        <h3 class="order-event">Despedida</h3>
+                        <p class="order-desc">El fin de un día perfecto, el inicio de nuestro para siempre</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── EVENT DETAILS (with ornamental frame & chandelier) ─── -->
+        <section class="section-event-details">
+            <div class="event-details-chandelier reveal">
+                <img src="assets/golden_chandelier.jpg" alt="" aria-hidden="true">
+            </div>
+            <div class="event-details-frame reveal">
+                <img src="assets/ornamental_frame.jpg" alt="" class="frame-bg" aria-hidden="true">
+                <div class="event-details-inner">
+                    <p class="event-details-label">ÚNETE A NUESTRA CELEBRACIÓN</p>
+                    <h2 class="event-details-title">Detalles del Evento</h2>
+                    <div class="event-details-separator"></div>
+                    <p class="event-details-date">15 de Noviembre, 2026</p>
+
+                    <p class="event-details-venue">⛪ Ceremonia</p>
+                    <p class="event-details-address">Parroquia Santa Rita de Cascia<br>Calle 3 #6-25, Plaza Principal ·
+                        7:00 PM</p>
+
+                    <p class="event-details-venue" style="margin-top:10px">🎉 Recepción</p>
+                    <p class="event-details-address">Cabaña La Gloria · 8:00 PM</p>
+
+                    <div class="event-details-btns">
+                        <a href="https://maps.app.goo.gl/HosvQ9vENBZ9vodf7?g_st=iw" target="_blank" rel="noopener"
+                            class="btn-event-detail" id="btn-open-maps-ceremonia">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                <circle cx="12" cy="10" r="3" />
+                            </svg>
+                            MAPA CEREMONIA
+                        </a>
+                        <a href="https://share.google/HMDIE9ZjXKbT3M0I3" target="_blank" rel="noopener"
+                            class="btn-event-detail btn-event-detail--outline" id="btn-open-maps-recepcion">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                <circle cx="12" cy="10" r="3" />
+                            </svg>
+                            MAPA RECEPCIÓN
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── PARENTS ─── -->
+        <section class="section-parents-luxury">
+            <div class="parents-header reveal">
+                <p class="parents-subtitle">Con la bendición de</p>
+                <h2 class="parents-title">Nuestros Padres</h2>
+                <div class="parents-divider"></div>
+            </div>
+            <div class="parents-grid-luxury">
+                <div class="parent-luxury reveal">
+                    <p class="parent-luxury-role">Padres de la Novia</p>
+                    <p class="parent-luxury-names">Xiomara Posada<br><span>&</span><br>León Facette</p>
+                </div>
+                <div class="parents-ornament">✦</div>
+                <div class="parent-luxury reveal">
+                    <p class="parent-luxury-role">Padres del Novio</p>
+                    <p class="parent-luxury-names">Xiomara Ariza<br><span>&</span><br>José Charris</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── DRESS CODE ─── -->
+        <section class="section-dresscode-luxury">
+            <div class="dresscode-header reveal">
+                <p class="dresscode-sub">Sugerencia de vestimenta</p>
+                <h2 class="dresscode-title-lux">Código de Vestimenta</h2>
+                <div class="dresscode-badge-lux">Formal</div>
+            </div>
+            <div class="dresscode-body reveal">
+                <div class="dresscode-card-lux">
+                    <div class="dresscode-icon-lux dresscode-icon-svg">
+                        <svg viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg" width="56" height="70">
+                            <path d="M40 8 C30 8 22 16 22 28 L22 36 L12 70 L68 70 L58 36 L58 28 C58 16 50 8 40 8Z"
+                                stroke="currentColor" stroke-width="2.5" fill="none" />
+                            <path d="M22 36 C22 36 28 44 40 44 C52 44 58 36 58 36" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" />
+                            <path d="M12 70 L8 90 L72 90 L68 70" stroke="currentColor" stroke-width="2.5" fill="none"
+                                stroke-linejoin="round" />
+                            <line x1="40" y1="44" x2="40" y2="70" stroke="currentColor" stroke-width="1.5"
+                                stroke-dasharray="3,3" />
+                        </svg>
+                    </div>
+                    <h3>Mujeres</h3>
+                    <p>Vestido largo<br>formal o elegante</p>
+                </div>
+                <div class="dresscode-card-lux">
+                    <div class="dresscode-icon-lux dresscode-icon-svg">
+                        <svg viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg" width="56" height="70">
+                            <rect x="28" y="6" width="24" height="20" rx="4" stroke="currentColor" stroke-width="2.5" />
+                            <path d="M40 26 L36 38 L40 42 L44 38 Z" stroke="currentColor" stroke-width="2"
+                                fill="none" />
+                            <path d="M28 26 L14 36 L14 88 L66 88 L66 36 L52 26" stroke="currentColor" stroke-width="2.5"
+                                fill="none" stroke-linejoin="round" />
+                            <line x1="40" y1="42" x2="40" y2="88" stroke="currentColor" stroke-width="1.5" />
+                            <path d="M28 26 L28 60 M52 26 L52 60" stroke="currentColor" stroke-width="1"
+                                stroke-dasharray="4,3" opacity="0.5" />
+                        </svg>
+                    </div>
+                    <h3>Hombres</h3>
+                    <p>Guayabera formal</p>
+                </div>
+            </div>
+            <p class="dresscode-note-lux reveal">Se reservan los colores <strong>blanco, marfil, champagne,<br>verde
+                    oliva y palo de rosa</strong></p>
+        </section>
+
+        <!-- ─── GIFTS ─── -->
+        <section class="section-gifts-luxury">
+            <div class="gifts-header reveal">
+                <p class="gifts-sub">Tu presencia es nuestro mejor regalo</p>
+                <h2 class="gifts-title-lux">Lluvia de Sobres</h2>
+                <div class="gifts-divider"></div>
+            </div>
+            <div class="gifts-body reveal">
+                <p class="gifts-msg">Si deseas tener un detalle con nosotros, hemos optado por la modalidad de
+                    <strong>lluvia de sobres</strong>. Tu aporte nos ayudará a construir nuestro nuevo hogar.</p>
+            </div>
+            <!-- No kids notice -->
+            <div class="no-kids-notice reveal">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
+                </svg>
+                <span>No se aceptan niños</span>
+            </div>
+        </section>
+
+        <!-- ─── RSVP ─── -->
+        <section id="rsvp" class="section-rsvp-luxury">
+            <div class="rsvp-header reveal">
+                <p class="rsvp-sub">¿Nos acompañas?</p>
+                <h2 class="rsvp-title-lux">Confirmar Asistencia</h2>
+                <div class="rsvp-divider"></div>
+            </div>
+            <!-- Personalized greeting -->
+            <div class="rsvp-guest-greeting reveal" id="rsvp-guest-greeting">
+                <p class="rsvp-guest-name-display">Querido(a) <strong id="guest-name">Invitado</strong></p>
+                <p class="rsvp-passes-info">Tienes <strong id="guest-passes-count">2</strong> cupo(s) asignado(s)</p>
+            </div>
+            <p class="rsvp-deadline reveal">Favor confirmar antes del <strong>1 de Noviembre, 2026</strong></p>
+            <form id="rsvp-form" class="rsvp-form-luxury reveal">
+                <div class="form-group-lux">
+                    <label>¿Asistirás a nuestra boda?</label>
+                    <div class="radio-group-lux">
+                        <label class="radio-lux">
+                            <input type="radio" name="confirm" value="si" required id="rsvp-yes">
+                            <span class="radio-custom-lux"></span>
+                            <span>¡Sí, ahí estaré!</span>
+                        </label>
+                        <label class="radio-lux">
+                            <input type="radio" name="confirm" value="no" id="rsvp-no">
+                            <span class="radio-custom-lux"></span>
+                            <span>No podré asistir</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Dynamic section: appears when "Sí" is selected -->
+                <div id="rsvp-details-yes" class="rsvp-details-section" style="display:none">
+                    <div class="form-group-lux">
+                        <label for="rsvp-guests">¿Cuántos cupos utilizarás? (máx. <span
+                                id="max-passes">2</span>)</label>
+                        <select id="rsvp-guests" name="guests" required>
+                            <option value="" disabled selected>Selecciona</option>
+                        </select>
+                    </div>
+                    <div id="rsvp-names-container" class="rsvp-names-container">
+                        <!-- Dynamic name fields will be injected here -->
+                    </div>
+                </div>
+
+                <!-- Dynamic section: appears when "No" is selected -->
+                <div id="rsvp-details-no" class="rsvp-details-section" style="display:none">
+                    <div class="form-group-lux">
+                        <label for="rsvp-message-no">Mensaje para los novios (opcional)</label>
+                        <textarea id="rsvp-message-no" name="message_no" rows="3"
+                            placeholder="Escribe un mensaje para Jean y Ana..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Message field for attendees -->
+                <div id="rsvp-message-group" class="form-group-lux" style="display:none">
+                    <label for="rsvp-message">Mensaje para los novios (opcional)</label>
+                    <textarea id="rsvp-message" name="message" rows="3"
+                        placeholder="Escribe un mensaje especial para Jean y Ana..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit-lux" id="btn-rsvp-submit">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm-1 14.5v-9l6 4.5z" />
+                    </svg>
+                    Confirmar vía WhatsApp
+                </button>
+            </form>
+        </section>
+
+        <!-- ─── FOOTER ─── -->
+        <footer class="section-footer-luxury">
+            <div class="footer-monogram-lux">
+                <span>J <em>&</em> A</span>
+            </div>
+            <p class="footer-hashtag-lux">#JeanYAna</p>
+            <p class="footer-msg-lux">¡Gracias por ser parte de nuestra historia!</p>
+            <div class="footer-date-lux">15 · 11 · 2026</div>
+        </footer>
+
+    </main>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         ADMIN PANEL (Hidden by default, outside <main>)
+    ══════════════════════════════════════════════════════════════ -->
+
+    <!-- Admin trigger at bottom of page -->
+    <div class="admin-trigger" id="admin-trigger">
+        <button class="admin-trigger-btn" id="admin-trigger-btn" aria-label="Panel de Administración">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="3" y="11" width="18" height="11" rx="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+        </button>
+    </div>
+
+    <!-- Password modal -->
+    <div class="admin-password-overlay" id="admin-password-overlay">
+        <div class="admin-password-modal">
+            <button class="admin-modal-close" id="admin-modal-close" aria-label="Cerrar">&times;</button>
+            <div class="admin-modal-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="3" y="11" width="18" height="11" rx="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                    <circle cx="12" cy="16" r="1" />
+                </svg>
+            </div>
+            <h3 class="admin-modal-title">Panel de Administración</h3>
+            <p class="admin-modal-desc">Ingresa la contraseña para acceder</p>
+            <div class="admin-password-field">
+                <input type="password" id="admin-password-input" placeholder="Contraseña" autocomplete="off">
+                <button class="admin-password-submit" id="admin-password-submit">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+            <p class="admin-password-error" id="admin-password-error">Contraseña incorrecta</p>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="admin-panel" id="admin-panel" style="display:none">
+        <div class="admin-panel-header">
+            <h2 class="admin-panel-title">Panel de Administración</h2>
+            <p class="admin-panel-sub">Genera y administra invitaciones personalizadas</p>
+            <button class="admin-close-btn" id="admin-close-btn">Cerrar Panel</button>
+        </div>
+
+        <div class="admin-panel-body">
+            <!-- Generator Card -->
+            <div class="admin-card">
+                <h3 class="admin-card-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.5">
+                        <path d="M12 5v14M5 12h14" />
+                    </svg>
+                    Nueva Invitación
+                </h3>
+                <div class="admin-form">
+                    <div class="admin-form-row">
+                        <div class="admin-form-group">
+                            <label for="admin-guest-name">Nombre del invitado / familia</label>
+                            <input type="text" id="admin-guest-name" placeholder="Ej: Familia Pérez">
+                        </div>
+                        <div class="admin-form-group admin-form-group--small">
+                            <label for="admin-guest-passes">Cupos</label>
+                            <input type="number" id="admin-guest-passes" value="2" min="1" max="15">
+                        </div>
+                    </div>
+                    <button class="admin-generate-btn" id="admin-generate-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                        </svg>
+                        Generar Link Personalizado
+                    </button>
+                </div>
+
+                <!-- Generated link display -->
+                <div class="admin-link-result" id="admin-link-result" style="display:none">
+                    <p class="admin-link-label">Link generado:</p>
+                    <div class="admin-link-box">
+                        <code id="admin-generated-link"></code>
+                        <button class="admin-copy-btn" id="admin-copy-link">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <rect x="9" y="9" width="13" height="13" rx="2" />
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                            </svg>
+                            <span>Copiar</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Invitation List Card -->
+            <div class="admin-card">
+                <h3 class="admin-card-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.5">
+                        <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
+                    </svg>
+                    Invitaciones Generadas
+                    <span class="admin-count" id="admin-invite-count">0</span>
+                </h3>
+                <div id="admin-invite-list" class="admin-invite-list">
+                    <p class="admin-empty-msg" id="admin-empty-msg">No hay invitaciones generadas aún</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
