@@ -460,11 +460,17 @@
                 </div>
 
                 <button type="submit" class="btn-submit-lux" id="btn-rsvp-submit">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm-1 14.5v-9l6 4.5z" />
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12" />
                     </svg>
-                    Confirmar vía WhatsApp
+                    Confirmar Asistencia
                 </button>
+
+                <div id="rsvp-success-toast" class="rsvp-success-toast" style="display:none">
+                    <div class="toast-icon">✨</div>
+                    <h4>¡Respuesta Registrada!</h4>
+                    <p>Muchas gracias por confirmar tu asistencia. ¡Nos vemos en la boda!</p>
+                </div>
             </form>
         </section>
 
@@ -572,6 +578,101 @@
                             <span>Copiar</span>
                         </button>
                     </div>
+                </div>
+            </div>
+
+            <!-- Excel RSVP Management Card -->
+            <div class="admin-card admin-card--excel">
+                <div class="admin-excel-header">
+                    <div>
+                        <h3 class="admin-card-title">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.8">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                <polyline points="14 2 14 8 20 8" />
+                                <line x1="8" y1="13" x2="16" y2="13" />
+                                <line x1="8" y1="17" x2="16" y2="17" />
+                                <polyline points="10 9 9 9 8 9" />
+                            </svg>
+                            Planilla Excel de Confirmaciones (RSVP)
+                        </h3>
+                        <p class="admin-excel-desc">Registro en tiempo real de invitados, estado de asistencia y cupos
+                        </p>
+                    </div>
+                    <button class="btn-export-excel" id="btn-export-excel">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        Descargar Excel (.csv)
+                    </button>
+                </div>
+
+                <!-- Excel Summary Metrics -->
+                <div class="admin-excel-metrics" id="admin-excel-metrics">
+                    <div class="metric-box metric-box--total">
+                        <span class="metric-num" id="metric-total-guests">0</span>
+                        <span class="metric-label">Invitados</span>
+                    </div>
+                    <div class="metric-box metric-box--passes">
+                        <span class="metric-num" id="metric-total-passes">0</span>
+                        <span class="metric-label">Cupos Totales</span>
+                    </div>
+                    <div class="metric-box metric-box--confirmed">
+                        <span class="metric-num" id="metric-confirmed-passes">0</span>
+                        <span class="metric-label">Cupos Confirmados</span>
+                    </div>
+                    <div class="metric-box metric-box--declined">
+                        <span class="metric-num" id="metric-declined-guests">0</span>
+                        <span class="metric-label">Rechazados</span>
+                    </div>
+                    <div class="metric-box metric-box--pending">
+                        <span class="metric-num" id="metric-pending-guests">0</span>
+                        <span class="metric-label">Pendientes</span>
+                    </div>
+                </div>
+
+                <!-- Controls: Search & Filter -->
+                <div class="admin-excel-controls">
+                    <div class="excel-search-wrapper">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
+                        <input type="text" id="admin-excel-search" placeholder="Buscar por invitado, mesa o estado...">
+                    </div>
+                    <div class="excel-filter-tabs">
+                        <button class="filter-tab active" data-filter="all">Todos</button>
+                        <button class="filter-tab" data-filter="Confirmado">Confirmados</button>
+                        <button class="filter-tab" data-filter="Rechazado">Rechazados</button>
+                        <button class="filter-tab" data-filter="Pendiente">Pendientes</button>
+                    </div>
+                </div>
+
+                <!-- Excel Table View -->
+                <div class="admin-excel-table-wrapper">
+                    <table class="admin-excel-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Mesa</th>
+                                <th>Invitado / Familia</th>
+                                <th>Pases</th>
+                                <th>Estado</th>
+                                <th>Pases Confirmados</th>
+                                <th>Asistentes Registrados</th>
+                                <th>Mensaje / Dedicatoria</th>
+                                <th>Fecha RSVP</th>
+                                <th>Link Personalizado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-excel-tbody">
+                            <!-- Dynamic rows rendered by script.js -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
 

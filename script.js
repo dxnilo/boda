@@ -390,7 +390,7 @@
         });
     }
 
-    // RSVP Form submission → WhatsApp
+    // RSVP Form submission → Confirmation & Google Sheets Sync
     if ($rsvpForm) {
         $rsvpForm.addEventListener('submit', function (e) {
             e.preventDefault();
@@ -399,42 +399,57 @@
             const confirm = formData.get('confirm');
             const guests = formData.get('guests');
             const message = formData.get('message') || '';
+            const messageNo = formData.get('message_no') || '';
 
-            let waMessage = '';
-
+            const attendeeNames = [];
+            const count = parseInt(guests) || 1;
             if (confirm === 'si') {
-                // Collect attendee names
-                const attendeeNames = [];
-                const count = parseInt(guests);
                 for (let i = 1; i <= count; i++) {
                     const name = formData.get(`attendee_${i}`);
                     if (name) attendeeNames.push(name.trim());
                 }
-
-                waMessage = `🎉 *CONFIRMACIÓN DE ASISTENCIA* 🎉\n\n`;
-                waMessage += `✅ ¡Sí asistiré a la boda de ${CONFIG.brideName} & ${CONFIG.groomName}!\n\n`;
-                waMessage += `👤 *Invitado(a):* ${guestName}\n`;
-                waMessage += `👥 *Cupos asignados:* ${guestPasses}\n`;
-                waMessage += `✋ *Cupos utilizados:* ${count}\n\n`;
-                waMessage += `📋 *Asistentes:*\n`;
-                attendeeNames.forEach((name, idx) => {
-                    waMessage += `   ${idx + 1}. ${name}\n`;
-                });
-                if (message) waMessage += `\n💌 *Dedicatoria:*\n${message}\n`;
-                waMessage += `\n¡Nos vemos en la boda! 💍`;
-            } else {
-                const messageNo = formData.get('message_no') || '';
-                waMessage = `📋 *CONFIRMACIÓN DE ASISTENCIA*\n\n`;
-                waMessage += `😔 Lamentablemente no podré asistir a la boda de ${CONFIG.brideName} & ${CONFIG.groomName}.\n\n`;
-                waMessage += `👤 *Invitado(a):* ${guestName}\n`;
-                if (messageNo) waMessage += `\n💌 *Mensaje:*\n${messageNo}\n`;
-                waMessage += `\n¡Les deseo lo mejor! 💕`;
             }
 
-            const encoded = encodeURIComponent(waMessage);
-            const waURL = `https://api.whatsapp.com/send?phone=${CONFIG.whatsappNumber}&text=${encoded}`;
-            window.open(waURL, '_blank');
+            const rsvpData = {
+                guestName: guestName,
+                status: confirm === 'si' ? 'Confirmado' : 'Rechazado',
+                passesAllocated: guestPasses,
+                passesUsed: confirm === 'si' ? count : 0,
+                attendees: confirm === 'si' ? attendeeNames : [],
+                message: confirm === 'si' ? message : messageNo,
+                timestamp: new Date().toLocaleString('es-ES')
+            };
+
+            // Save to localStorage & update Admin Panel Excel Table
+            saveRSVPResponse(rsvpData.guestName, rsvpData.status, rsvpData.passesAllocated, rsvpData.passesUsed, rsvpData.attendees, rsvpData.message);
+
+            // Send to Google Sheets if Webhook URL is set
+            sendToGoogleSheets(rsvpData);
+
+            // Show feedback toast to guest
+            const $toast = document.getElementById('rsvp-success-toast');
+            if ($toast) {
+                $toast.style.display = 'block';
+                $toast.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
         });
+    }
+
+    // Google Sheets Webhook URL (Pega aquí la URL de tu Google Apps Script cuando la tengas lista)
+    const GOOGLE_SHEETS_WEBHOOK_URL = '';
+
+    async function sendToGoogleSheets(data) {
+        if (!GOOGLE_SHEETS_WEBHOOK_URL) return;
+        try {
+            await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+        } catch (err) {
+            console.error('Error enviando datos a Google Sheets:', err);
+        }
     }
 
     // ══════════════════════════════════════════════════════════════
@@ -666,8 +681,18 @@
         localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
     }
 
+    const GITHUB_PAGES_URL = 'https://dxnilo.github.io/boda/';
+
     function generateInvitationURL(name, passes) {
-        const base = window.location.origin + window.location.pathname;
+        let base;
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') {
+            base = GITHUB_PAGES_URL;
+        } else {
+            base = window.location.origin + window.location.pathname;
+        }
+        if (!base.endsWith('/')) {
+            base += '/';
+        }
         const params = new URLSearchParams({
             invitado: name,
             pases: passes
@@ -675,8 +700,163 @@
         return `${base}?${params.toString()}`;
     }
 
+    function saveRSVPResponse(name, status, passesAllocated, passesUsed, attendees, message) {
+        const invitations = getInvitations();
+        const now = new Date();
+        const timestamp = now.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+
+        const idx = invitations.findIndex(i => i.name.toLowerCase() === name.toLowerCase());
+        if (idx >= 0) {
+            invitations[idx].status = status;
+            invitations[idx].passesUsed = passesUsed;
+            invitations[idx].attendees = attendees;
+            invitations[idx].message = message;
+            invitations[idx].timestamp = timestamp;
+        } else {
+            invitations.unshift({
+                name: name,
+                passes: passesAllocated,
+                status: status,
+                passesUsed: passesUsed,
+                attendees: attendees,
+                message: message,
+                timestamp: timestamp,
+                url: generateInvitationURL(name, passesAllocated),
+                date: timestamp.split(' ')[0]
+            });
+        }
+        saveInvitations(invitations);
+        renderAdminExcelTable();
+    }
+
+    function renderAdminExcelTable() {
+        const tbody = document.getElementById('admin-excel-tbody');
+        if (!tbody) return;
+
+        const invitations = getInvitations();
+        const searchInput = document.getElementById('admin-excel-search');
+        const searchTerm = (searchInput ? searchInput.value : '').toLowerCase().trim();
+        const activeTab = document.querySelector('.excel-filter-tabs .filter-tab.active');
+        const activeFilter = activeTab ? activeTab.dataset.filter : 'all';
+
+        let totalGuests = invitations.length;
+        let totalPasses = 0;
+        let confirmedPasses = 0;
+        let declinedCount = 0;
+        let pendingCount = 0;
+
+        invitations.forEach(inv => {
+            const passes = parseInt(inv.passes) || 1;
+            totalPasses += passes;
+            const status = inv.status || 'Pendiente';
+
+            if (status === 'Confirmado') {
+                confirmedPasses += (inv.passesUsed !== undefined ? parseInt(inv.passesUsed) : passes);
+            } else if (status === 'Rechazado') {
+                declinedCount++;
+            } else {
+                pendingCount++;
+            }
+        });
+
+        const $tot = document.getElementById('metric-total-guests');
+        const $pas = document.getElementById('metric-total-passes');
+        const $cnf = document.getElementById('metric-confirmed-passes');
+        const $dec = document.getElementById('metric-declined-guests');
+        const $pnd = document.getElementById('metric-pending-guests');
+
+        if ($tot) $tot.textContent = totalGuests;
+        if ($pas) $pas.textContent = totalPasses;
+        if ($cnf) $cnf.textContent = confirmedPasses;
+        if ($dec) $dec.textContent = declinedCount;
+        if ($pnd) $pnd.textContent = pendingCount;
+
+        const filtered = invitations.filter(inv => {
+            const status = inv.status || 'Pendiente';
+            const matchesFilter = activeFilter === 'all' || status === activeFilter;
+
+            const nameMatch = (inv.name || '').toLowerCase().includes(searchTerm);
+            const mesaMatch = (inv.mesa || '').toLowerCase().includes(searchTerm);
+            const statusMatch = status.toLowerCase().includes(searchTerm);
+
+            return matchesFilter && (nameMatch || mesaMatch || statusMatch);
+        });
+
+        tbody.innerHTML = '';
+        if (filtered.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding: 24px; color: rgba(255,255,255,0.4);">No se encontraron registros de invitados</td></tr>`;
+            return;
+        }
+
+        filtered.forEach((inv, index) => {
+            const status = inv.status || 'Pendiente';
+            let badgeClass = 'badge-status--pendiente';
+            if (status === 'Confirmado') badgeClass = 'badge-status--confirmado';
+            if (status === 'Rechazado') badgeClass = 'badge-status--rechazado';
+
+            const attendeesStr = Array.isArray(inv.attendees) && inv.attendees.length > 0 ? inv.attendees.join(', ') : (inv.attendees || '-');
+            const url = inv.url || generateInvitationURL(inv.name, inv.passes);
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${escapeHtml(inv.mesa || 'Mesa')}</td>
+                <td><strong>${escapeHtml(inv.name)}</strong></td>
+                <td>${inv.passes || 1}</td>
+                <td><span class="badge-status ${badgeClass}">${status}</span></td>
+                <td>${status === 'Confirmado' ? (inv.passesUsed !== undefined ? inv.passesUsed : inv.passes) : (status === 'Rechazado' ? 0 : '-')}</td>
+                <td>${escapeHtml(attendeesStr)}</td>
+                <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${escapeHtml(inv.message || '')}">${escapeHtml(inv.message || '-')}</td>
+                <td>${escapeHtml(inv.timestamp || inv.date || '-')}</td>
+                <td>
+                    <button class="btn-table-copy" data-url="${escapeHtml(url)}">Copiar Link</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        tbody.querySelectorAll('.btn-table-copy').forEach(btn => {
+            btn.addEventListener('click', function () {
+                copyToClipboard(this.dataset.url);
+                this.textContent = '¡Copiado!';
+                setTimeout(() => { this.textContent = 'Copiar Link'; }, 1500);
+            });
+        });
+    }
+
+    function downloadExcelRSVP() {
+        const invitations = getInvitations();
+        let csvContent = "\uFEFF";
+        csvContent += "ID,Mesa,Invitado / Familia,Cupos Asignados,Estado,Cupos Confirmados,Asistentes Registrados,Mensaje / Dedicatoria,Fecha RSVP,Link Personalizado\n";
+
+        invitations.forEach((g, index) => {
+            const id = index + 1;
+            const mesa = `"${(g.mesa || 'Mesa').replace(/"/g, '""')}"`;
+            const name = `"${(g.name || '').replace(/"/g, '""')}"`;
+            const passes = g.passes || 1;
+            const status = g.status || 'Pendiente';
+            const passesUsed = status === 'Confirmado' ? (g.passesUsed !== undefined ? g.passesUsed : passes) : (status === 'Rechazado' ? 0 : 0);
+            const attendees = `"${(Array.isArray(g.attendees) ? g.attendees.join(', ') : (g.attendees || '')).replace(/"/g, '""')}"`;
+            const message = `"${(g.message || '').replace(/"/g, '""')}"`;
+            const timestamp = `"${(g.timestamp || g.date || '').replace(/"/g, '""')}"`;
+            const url = `"${g.url || generateInvitationURL(g.name, passes)}"`;
+
+            csvContent += `${id},${mesa},${name},${passes},${status},${passesUsed},${attendees},${message},${timestamp},${url}\n`;
+        });
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const blobUrl = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.setAttribute('download', 'Confirmaciones_Boda_Jean_y_Ana.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
     function renderInvitationList() {
         const invitations = getInvitations();
+        renderAdminExcelTable();
 
         if (!$adminInviteList) return;
 
@@ -882,12 +1062,28 @@
             const span = this.querySelector('span');
             if (span) span.textContent = '¡Copiado!';
 
-            setTimeout(() => {
-                this.classList.remove('copied');
-                if (span) span.textContent = 'Copiar';
-            }, 2000);
         });
     }
+
+    // ─── Excel Export & Controls ───
+    const $btnExportExcel = document.getElementById('btn-export-excel');
+    if ($btnExportExcel) {
+        $btnExportExcel.addEventListener('click', downloadExcelRSVP);
+    }
+
+    const $adminExcelSearch = document.getElementById('admin-excel-search');
+    if ($adminExcelSearch) {
+        $adminExcelSearch.addEventListener('input', renderAdminExcelTable);
+    }
+
+    const filterTabs = document.querySelectorAll('.excel-filter-tabs .filter-tab');
+    filterTabs.forEach(tab => {
+        tab.addEventListener('click', function () {
+            filterTabs.forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            renderAdminExcelTable();
+        });
+    });
 
     // ══════════════════════════════════════════════════════════════
     // INITIALIZATION
