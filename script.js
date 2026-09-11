@@ -10,7 +10,7 @@
 
     // ─── CONFIG ───
     const CONFIG = {
-        weddingDate: '2026-11-15T17:00:00',
+        weddingDate: '2026-12-19T17:00:00',
         groomName: 'Jean',
         brideName: 'Ana',
         whatsappNumber: '573001234567',
