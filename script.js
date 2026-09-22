@@ -1073,44 +1073,46 @@
         let isAnimating = false;
 
         function arrange(activeIdx) {
+            const nextIdx = (activeIdx + 1) % total;
             cards.forEach((card, i) => {
-                card.classList.remove('active', 'stack-1', 'stack-2', 'dealing-out');
-
+                card.classList.remove('active', 'next-up', 'fading-out');
                 if (i === activeIdx) {
                     card.classList.add('active');
-                } else if (i === (activeIdx + 1) % total) {
-                    card.classList.add('stack-1');
-                } else if (i === (activeIdx + 2) % total) {
-                    card.classList.add('stack-2');
+                } else if (i === nextIdx) {
+                    card.classList.add('next-up');
                 }
             });
             dots.forEach((d, i) => d.classList.toggle('active', i === activeIdx));
         }
 
-        function goTo(nextIdx, animate) {
+        function goTo(nextIdx) {
             if (isAnimating) return;
             const target = (nextIdx + total) % total;
             if (target === current) return;
 
-            if (animate) {
-                isAnimating = true;
-                cards[current].classList.add('dealing-out');
+            isAnimating = true;
+            const outgoing = cards[current];
+            const incoming = cards[target];
 
-                setTimeout(() => {
-                    current = target;
-                    arrange(current);
-                    // Add a tiny delay before unlocking to ensure the new active card sets up
-                    setTimeout(() => { isAnimating = false; }, 100);
-                }, 400); // 400ms is the time the card takes to slide away
-            } else {
+            // Put incoming card underneath at full opacity
+            incoming.classList.remove('fading-out');
+            incoming.classList.add('active');
+
+            // Fade out the outgoing card on top
+            outgoing.classList.remove('active');
+            outgoing.classList.add('fading-out');
+
+            // After the transition ends, clean up
+            setTimeout(() => {
                 current = target;
                 arrange(current);
-            }
+                isAnimating = false;
+            }, 1050); // slightly longer than the 1s CSS transition
         }
 
         function startAuto() {
             stopAuto();
-            autoTimer = setInterval(() => goTo(current + 1, true), 4200);
+            autoTimer = setInterval(() => goTo(current + 1), 5000);
         }
 
         function stopAuto() {
@@ -1120,12 +1122,12 @@
         // Init
         arrange(0);
 
-        if (prevBtn) prevBtn.addEventListener('click', () => { goTo(current - 1, true); startAuto(); });
-        if (nextBtn) nextBtn.addEventListener('click', () => { goTo(current + 1, true); startAuto(); });
+        if (prevBtn) prevBtn.addEventListener('click', () => { goTo(current - 1); startAuto(); });
+        if (nextBtn) nextBtn.addEventListener('click', () => { goTo(current + 1); startAuto(); });
 
         dots.forEach(dot => {
             dot.addEventListener('click', function () {
-                goTo(parseInt(this.dataset.index), true);
+                goTo(parseInt(this.dataset.index));
                 startAuto();
             });
         });
@@ -1137,7 +1139,7 @@
             wrapper.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
             wrapper.addEventListener('touchend', e => {
                 const diff = touchStartX - e.changedTouches[0].clientX;
-                if (Math.abs(diff) > 40) { goTo(diff > 0 ? current + 1 : current - 1, true); startAuto(); }
+                if (Math.abs(diff) > 40) { goTo(diff > 0 ? current + 1 : current - 1); startAuto(); }
             }, { passive: true });
             wrapper.addEventListener('mouseenter', stopAuto);
             wrapper.addEventListener('mouseleave', startAuto);

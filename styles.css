@@ -2582,17 +2582,17 @@ button {
     perspective: 800px;
 }
 
-/* Individual cards */
+/* Individual cards — cross-fade system */
 .album-card {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-        opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    transform-origin: center bottom;
-    will-change: transform, opacity, z-index;
+    opacity: 0;
+    z-index: 1;
+    pointer-events: none;
+    transition: opacity 1s ease-in-out;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
 }
@@ -2604,9 +2604,9 @@ button {
     border-radius: 6px;
     padding: 12px 12px 52px;
     box-shadow:
-        0 4px 16px rgba(44, 36, 22, 0.10),
-        0 1px 4px rgba(0, 0, 0, 0.06);
-    border: 1px solid rgba(201, 165, 80, 0.15);
+        0 12px 40px rgba(44, 36, 22, 0.15),
+        0 2px 8px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(201, 165, 80, 0.2);
     overflow: hidden;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
@@ -2645,86 +2645,24 @@ button {
     letter-spacing: 2px;
 }
 
-/* Stacking positions — background cards peek from behind */
-.album-card:nth-child(1) {
-    --rot: -2deg;
-    --x: 0px;
-    --y: 0px;
-}
-
-.album-card:nth-child(2) {
-    --rot: 3deg;
-    --x: 4px;
-    --y: 2px;
-}
-
-.album-card:nth-child(3) {
-    --rot: -1.5deg;
-    --x: -3px;
-    --y: 1px;
-}
-
-.album-card:nth-child(4) {
-    --rot: 2.5deg;
-    --x: 5px;
-    --y: 3px;
-}
-
-.album-card:nth-child(5) {
-    --rot: -3deg;
-    --x: -4px;
-    --y: 2px;
-}
-
-/* Default: cards hidden behind the stack  */
-.album-card {
-    opacity: 0;
-    transform: translate3d(0, 0, 0) scale(0.9);
-    z-index: 1;
-    pointer-events: none;
-}
-
-/* Card directly behind the active one (Next in queue) */
-.album-card.stack-1 {
-    opacity: 0.75;
-    transform: translate3d(var(--tx, 4px), var(--ty, 2px), 0) rotate(var(--rot, 2.5deg)) scale(0.95);
+/* Next card: ready underneath at full opacity */
+.album-card.next-up {
+    opacity: 1;
     z-index: 9;
 }
 
-/* Card two steps behind the active one (2nd in queue) */
-.album-card.stack-2 {
-    opacity: 0.45;
-    transform: translate3d(var(--tx, -3px), var(--ty, 1px), 0) rotate(var(--rot, -2deg)) scale(0.91);
-    z-index: 8;
-}
-
-.album-card.stack-1 .album-card-inner,
-.album-card.stack-2 .album-card-inner {
-    box-shadow: 0 2px 8px rgba(44, 36, 22, 0.08);
-}
-
-/* Active card (front, centered) */
+/* Active card: visible on top */
 .album-card.active {
     opacity: 1;
-    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
     z-index: 10;
     pointer-events: auto;
 }
 
-.album-card.active .album-card-inner {
-    box-shadow:
-        0 12px 40px rgba(44, 36, 22, 0.18),
-        0 2px 8px rgba(0, 0, 0, 0.08);
-    border-color: rgba(201, 165, 80, 0.25);
-}
-
-/* Dealing animation — card slides out to the left */
-.album-card.dealing-out {
+/* Fading out: card dissolves revealing next-up beneath */
+.album-card.fading-out {
     opacity: 0;
-    transform: translate3d(-120%, -20px, 0) rotate(-12deg) scale(0.9);
-    z-index: 15;
-    transition: transform 0.65s cubic-bezier(0.55, 0.06, 0.68, 0.19),
-        opacity 0.65s cubic-bezier(0.55, 0.06, 0.68, 0.19);
+    z-index: 11;
+    transition: opacity 1s ease-in-out;
 }
 
 /* Navigation arrows */
