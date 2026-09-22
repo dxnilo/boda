@@ -2679,19 +2679,27 @@ button {
 /* Default: cards hidden behind the stack  */
 .album-card {
     opacity: 0;
-    transform: translate3d(var(--x, 0), var(--y, 0), 0) rotate(var(--rot, 0deg)) scale(0.94);
+    transform: translate3d(0, 0, 0) scale(0.9);
     z-index: 1;
     pointer-events: none;
 }
 
-/* Behind-visible cards (the ones peeking from behind) */
-.album-card.behind {
-    opacity: 0.6;
-    transform: translate3d(var(--x, 0), var(--y, 0), 0) rotate(var(--rot, 0deg)) scale(0.94);
-    z-index: 2;
+/* Card directly behind the active one (Next in queue) */
+.album-card.stack-1 {
+    opacity: 0.75;
+    transform: translate3d(var(--tx, 4px), var(--ty, 2px), 0) rotate(var(--rot, 2.5deg)) scale(0.95);
+    z-index: 9;
 }
 
-.album-card.behind .album-card-inner {
+/* Card two steps behind the active one (2nd in queue) */
+.album-card.stack-2 {
+    opacity: 0.45;
+    transform: translate3d(var(--tx, -3px), var(--ty, 1px), 0) rotate(var(--rot, -2deg)) scale(0.91);
+    z-index: 8;
+}
+
+.album-card.stack-1 .album-card-inner,
+.album-card.stack-2 .album-card-inner {
     box-shadow: 0 2px 8px rgba(44, 36, 22, 0.08);
 }
 

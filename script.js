@@ -1074,19 +1074,14 @@
 
         function arrange(activeIdx) {
             cards.forEach((card, i) => {
-                card.classList.remove('active', 'behind', 'dealing-out');
+                card.classList.remove('active', 'stack-1', 'stack-2', 'dealing-out');
+
                 if (i === activeIdx) {
                     card.classList.add('active');
-                } else {
-                    // Show adjacent cards peeking behind
-                    const dist = Math.min(
-                        Math.abs(i - activeIdx),
-                        Math.abs(i - activeIdx + total),
-                        Math.abs(i - activeIdx - total)
-                    );
-                    if (dist <= 2) {
-                        card.classList.add('behind');
-                    }
+                } else if (i === (activeIdx + 1) % total) {
+                    card.classList.add('stack-1');
+                } else if (i === (activeIdx + 2) % total) {
+                    card.classList.add('stack-2');
                 }
             });
             dots.forEach((d, i) => d.classList.toggle('active', i === activeIdx));
@@ -1104,8 +1099,9 @@
                 setTimeout(() => {
                     current = target;
                     arrange(current);
-                    isAnimating = false;
-                }, 500);
+                    // Add a tiny delay before unlocking to ensure the new active card sets up
+                    setTimeout(() => { isAnimating = false; }, 100);
+                }, 400); // 400ms is the time the card takes to slide away
             } else {
                 current = target;
                 arrange(current);
