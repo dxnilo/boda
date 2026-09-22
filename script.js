@@ -358,37 +358,7 @@
         });
     }
 
-    // Generate dynamic name fields based on selected cupos
-    if ($rsvpGuests) {
-        $rsvpGuests.addEventListener('change', function () {
-            const count = parseInt(this.value);
-            $rsvpNamesContainer.innerHTML = '';
-
-            for (let i = 1; i <= count; i++) {
-                const fieldDiv = document.createElement('div');
-                fieldDiv.className = 'rsvp-name-field form-group-lux';
-                fieldDiv.style.animationDelay = `${(i - 1) * 0.1}s`;
-
-                const label = document.createElement('label');
-                label.setAttribute('for', `rsvp-attendee-${i}`);
-                label.textContent = `Nombre del invitado ${i}`;
-
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.id = `rsvp-attendee-${i}`;
-                input.name = `attendee_${i}`;
-                input.placeholder = `Nombre completo del invitado ${i}`;
-                input.required = true;
-
-                fieldDiv.appendChild(label);
-                fieldDiv.appendChild(input);
-                $rsvpNamesContainer.appendChild(fieldDiv);
-            }
-
-            // Show message group
-            $rsvpMessageGroup.style.display = 'block';
-        });
-    }
+    // Name fields pre-fill is handled by the enhanced handler below (initCarousel section)
 
     // RSVP Form submission → Confirmation & Google Sheets Sync
     if ($rsvpForm) {
@@ -1084,6 +1054,149 @@
             renderAdminExcelTable();
         });
     });
+
+    // ══════════════════════════════════════════════════════════════
+    // STACKED ALBUM CAROUSEL (Card shuffle animation)
+    // ══════════════════════════════════════════════════════════════
+
+    (function initAlbumCarousel() {
+        const stack = document.getElementById('carousel-track');
+        if (!stack) return;
+
+        const cards = stack.querySelectorAll('.album-card');
+        const dots = document.querySelectorAll('.album-dot');
+        const prevBtn = document.getElementById('carousel-prev');
+        const nextBtn = document.getElementById('carousel-next');
+        const total = cards.length;
+        let current = 0;
+        let autoTimer = null;
+        let isAnimating = false;
+
+        function arrange(activeIdx) {
+            cards.forEach((card, i) => {
+                card.classList.remove('active', 'behind', 'dealing-out');
+                if (i === activeIdx) {
+                    card.classList.add('active');
+                } else {
+                    // Show adjacent cards peeking behind
+                    const dist = Math.min(
+                        Math.abs(i - activeIdx),
+                        Math.abs(i - activeIdx + total),
+                        Math.abs(i - activeIdx - total)
+                    );
+                    if (dist <= 2) {
+                        card.classList.add('behind');
+                    }
+                }
+            });
+            dots.forEach((d, i) => d.classList.toggle('active', i === activeIdx));
+        }
+
+        function goTo(nextIdx, animate) {
+            if (isAnimating) return;
+            const target = (nextIdx + total) % total;
+            if (target === current) return;
+
+            if (animate) {
+                isAnimating = true;
+                cards[current].classList.add('dealing-out');
+
+                setTimeout(() => {
+                    current = target;
+                    arrange(current);
+                    isAnimating = false;
+                }, 500);
+            } else {
+                current = target;
+                arrange(current);
+            }
+        }
+
+        function startAuto() {
+            stopAuto();
+            autoTimer = setInterval(() => goTo(current + 1, true), 4200);
+        }
+
+        function stopAuto() {
+            if (autoTimer) clearInterval(autoTimer);
+        }
+
+        // Init
+        arrange(0);
+
+        if (prevBtn) prevBtn.addEventListener('click', () => { goTo(current - 1, true); startAuto(); });
+        if (nextBtn) nextBtn.addEventListener('click', () => { goTo(current + 1, true); startAuto(); });
+
+        dots.forEach(dot => {
+            dot.addEventListener('click', function () {
+                goTo(parseInt(this.dataset.index), true);
+                startAuto();
+            });
+        });
+
+        // Touch/swipe
+        let touchStartX = 0;
+        const wrapper = document.getElementById('photo-carousel');
+        if (wrapper) {
+            wrapper.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+            wrapper.addEventListener('touchend', e => {
+                const diff = touchStartX - e.changedTouches[0].clientX;
+                if (Math.abs(diff) > 40) { goTo(diff > 0 ? current + 1 : current - 1, true); startAuto(); }
+            }, { passive: true });
+            wrapper.addEventListener('mouseenter', stopAuto);
+            wrapper.addEventListener('mouseleave', startAuto);
+        }
+
+        startAuto();
+    })();
+
+    // ══════════════════════════════════════════════════════════════
+    // RSVP IMPROVEMENT: pre-fill attendee names
+    // ══════════════════════════════════════════════════════════════
+
+    // Support optional URL param ?acompanante=NombreAcompañante
+    const partnerName = urlParams.get('acompanante') || '';
+
+    // Override the cupos change handler to pre-fill guest name in field 1
+    if ($rsvpGuests) {
+        $rsvpGuests.addEventListener('change', function () {
+            const count = parseInt(this.value);
+            $rsvpNamesContainer.innerHTML = '';
+
+            for (let i = 1; i <= count; i++) {
+                const fieldDiv = document.createElement('div');
+                fieldDiv.className = 'rsvp-name-field form-group-lux';
+                fieldDiv.style.animationDelay = `${(i - 1) * 0.1}s`;
+
+                const label = document.createElement('label');
+                label.setAttribute('for', `rsvp-attendee-${i}`);
+                label.textContent = i === 1 ? 'Tu nombre' : (partnerName ? `Nombre del acompañante` : `Nombre del invitado ${i}`);
+
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.id = `rsvp-attendee-${i}`;
+                input.name = `attendee_${i}`;
+                input.required = true;
+
+                // Pre-fill: field 1 = guest name, field 2 = partner name if available
+                if (i === 1 && guestName && guestName !== CONFIG.defaultGuest) {
+                    input.value = guestName;
+                    input.placeholder = guestName;
+                } else if (i === 2 && partnerName) {
+                    input.value = partnerName;
+                    input.placeholder = partnerName;
+                } else {
+                    input.placeholder = `Nombre completo del invitado ${i}`;
+                }
+
+                fieldDiv.appendChild(label);
+                fieldDiv.appendChild(input);
+                $rsvpNamesContainer.appendChild(fieldDiv);
+            }
+
+            $rsvpMessageGroup.style.display = 'block';
+        }, false);
+    }
 
     // ══════════════════════════════════════════════════════════════
     // INITIALIZATION

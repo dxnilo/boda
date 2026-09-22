@@ -2474,3 +2474,387 @@ button {
     font-size: 0.88rem;
     color: rgba(255, 255, 255, 0.8);
 }
+
+/* ══════════════════════════════════════════════════════════════
+   HERO ENHANCEMENTS
+   ══════════════════════════════════════════════════════════════ */
+
+.section-hero {
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+/* Force "A" capital styling - sharp/pointy serif A */
+.name-capital-a {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1em;
+    font-weight: 500;
+    font-style: normal;
+    display: inline;
+    letter-spacing: 0.02em;
+}
+
+.hero-getting-married {
+    font-size: 0.78rem;
+    letter-spacing: 5px;
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.hero-names {
+    font-size: clamp(3.5rem, 16vw, 5.5rem);
+}
+
+.hero-date {
+    font-size: 0.82rem;
+    letter-spacing: 4px;
+}
+
+.hero-invitation-message {
+    font-size: clamp(1.15rem, 4.5vw, 1.4rem);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   STACKED ALBUM CAROUSEL
+   ══════════════════════════════════════════════════════════════ */
+
+.section-album {
+    background: var(--white);
+    padding: 20px 0 64px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.album-chandelier {
+    max-width: 160px;
+    margin: 0 auto 16px;
+    pointer-events: none;
+    user-select: none;
+}
+
+.album-chandelier img {
+    width: 100%;
+    object-fit: contain;
+    opacity: 0.88;
+}
+
+.album-header {
+    margin-bottom: 32px;
+    padding: 0 24px;
+}
+
+.album-sub {
+    font-family: var(--font-sans);
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 8px;
+}
+
+.album-title {
+    font-family: var(--font-script);
+    font-size: clamp(2.4rem, 9vw, 3.2rem);
+    color: var(--text-dark);
+    margin-bottom: 8px;
+}
+
+.album-ornament {
+    font-size: 0.9rem;
+    color: var(--gold);
+    letter-spacing: 8px;
+    opacity: 0.7;
+}
+
+/* Stack container */
+.album-stack-container {
+    position: relative;
+    max-width: 340px;
+    margin: 0 auto;
+    padding: 0 20px;
+    height: 480px;
+}
+
+.album-stack {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    perspective: 800px;
+}
+
+/* Individual cards */
+.album-card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform-origin: center bottom;
+    will-change: transform, opacity, z-index;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.album-card-inner {
+    width: 100%;
+    height: 100%;
+    background: var(--white);
+    border-radius: 6px;
+    padding: 12px 12px 52px;
+    box-shadow:
+        0 4px 16px rgba(44, 36, 22, 0.10),
+        0 1px 4px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(201, 165, 80, 0.15);
+    overflow: hidden;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.album-card-inner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    border-radius: 3px;
+    display: block;
+    image-rendering: -webkit-optimize-contrast;
+}
+
+/* Caption at bottom of polaroid card */
+.album-card-caption {
+    position: absolute;
+    bottom: 14px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: var(--font-serif);
+    font-size: 0.82rem;
+    font-style: italic;
+    color: var(--text-light);
+    letter-spacing: 0.5px;
+}
+
+.album-card-caption span {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-style: normal;
+    color: var(--gold-dark);
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+}
+
+/* Stacking positions — background cards peek from behind */
+.album-card:nth-child(1) {
+    --rot: -2deg;
+    --x: 0px;
+    --y: 0px;
+}
+
+.album-card:nth-child(2) {
+    --rot: 3deg;
+    --x: 4px;
+    --y: 2px;
+}
+
+.album-card:nth-child(3) {
+    --rot: -1.5deg;
+    --x: -3px;
+    --y: 1px;
+}
+
+.album-card:nth-child(4) {
+    --rot: 2.5deg;
+    --x: 5px;
+    --y: 3px;
+}
+
+.album-card:nth-child(5) {
+    --rot: -3deg;
+    --x: -4px;
+    --y: 2px;
+}
+
+/* Default: cards hidden behind the stack  */
+.album-card {
+    opacity: 0;
+    transform: translate3d(var(--x, 0), var(--y, 0), 0) rotate(var(--rot, 0deg)) scale(0.94);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Behind-visible cards (the ones peeking from behind) */
+.album-card.behind {
+    opacity: 0.6;
+    transform: translate3d(var(--x, 0), var(--y, 0), 0) rotate(var(--rot, 0deg)) scale(0.94);
+    z-index: 2;
+}
+
+.album-card.behind .album-card-inner {
+    box-shadow: 0 2px 8px rgba(44, 36, 22, 0.08);
+}
+
+/* Active card (front, centered) */
+.album-card.active {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+    z-index: 10;
+    pointer-events: auto;
+}
+
+.album-card.active .album-card-inner {
+    box-shadow:
+        0 12px 40px rgba(44, 36, 22, 0.18),
+        0 2px 8px rgba(0, 0, 0, 0.08);
+    border-color: rgba(201, 165, 80, 0.25);
+}
+
+/* Dealing animation — card slides out to the left */
+.album-card.dealing-out {
+    opacity: 0;
+    transform: translate3d(-120%, -20px, 0) rotate(-12deg) scale(0.9);
+    z-index: 15;
+    transition: transform 0.65s cubic-bezier(0.55, 0.06, 0.68, 0.19),
+        opacity 0.65s cubic-bezier(0.55, 0.06, 0.68, 0.19);
+}
+
+/* Navigation arrows */
+.album-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 20;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--white);
+    color: var(--gold-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 14px rgba(44, 36, 22, 0.15);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(201, 165, 80, 0.25);
+}
+
+.album-nav:hover {
+    background: var(--gold);
+    color: var(--white);
+    border-color: var(--gold);
+    transform: translateY(-50%) scale(1.06);
+}
+
+.album-nav--prev {
+    left: -2px;
+}
+
+.album-nav--next {
+    right: -2px;
+}
+
+/* Dots / counter */
+.album-counter {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 24px;
+}
+
+.album-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold-light);
+    border: none;
+    padding: 0;
+    opacity: 0.3;
+    transition: all 0.4s ease;
+    cursor: pointer;
+}
+
+.album-dot.active {
+    opacity: 1;
+    background: var(--gold);
+    transform: scale(1.5);
+}
+
+@media (max-width: 420px) {
+    .album-stack-container {
+        height: 400px;
+        max-width: 290px;
+    }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   READABILITY IMPROVEMENTS
+   ══════════════════════════════════════════════════════════════ */
+
+/* General body text - slightly larger and more contrast */
+.journey-event-desc {
+    font-size: 0.98rem;
+    color: var(--text-medium);
+    line-height: 1.8;
+}
+
+.romantic-quote-text {
+    font-size: clamp(2rem, 7.5vw, 2.6rem);
+}
+
+.order-desc {
+    font-size: 0.88rem;
+    color: var(--text-medium);
+}
+
+.event-details-address {
+    font-size: 0.88rem;
+    color: var(--text-medium);
+    line-height: 1.7;
+}
+
+.parent-luxury-names {
+    font-size: clamp(1.15rem, 4.5vw, 1.35rem);
+    color: var(--text-dark);
+}
+
+.dresscode-card-lux p {
+    font-size: 0.92rem;
+    color: var(--text-medium);
+}
+
+.gifts-msg {
+    font-size: 0.96rem;
+    color: var(--text-medium);
+    line-height: 1.8;
+}
+
+.no-kids-notice span {
+    font-size: 0.94rem;
+    color: var(--text-medium);
+    line-height: 1.6;
+}
+
+.footer-msg-lux {
+    font-size: 0.9rem;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   RSVP GUEST NAME - LARGER
+   ══════════════════════════════════════════════════════════════ */
+
+.guest-name-large {
+    font-size: 1.45em;
+    display: inline-block;
+    color: var(--gold-dark);
+    font-family: var(--font-script);
+    font-weight: 400;
+}
+
+.rsvp-guest-name-display {
+    font-size: 1.1rem;
+}
+
+.rsvp-passes-info {
+    font-size: 0.97rem;
+    margin-top: 8px;
+}
