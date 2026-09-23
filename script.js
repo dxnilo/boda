@@ -90,12 +90,24 @@
     // PERSONALIZATION
     // ══════════════════════════════════════════════════════════════
 
+    let guestCompanions = [];
+
     async function applyPersonalization() {
         if (guestCode && sb) {
             try {
                 const { data, error } = await sb.from('guests').select('*').eq('codigo', guestCode).single();
                 if (data) {
                     guestData = { ...data };
+
+                    // Also query companion names if primary guest
+                    if (!guestData.es_acompanante) {
+                        const { data: compData } = await sb.from('guests')
+                            .select('*')
+                            .eq('acompanante_de', guestData.nombre);
+                        if (compData) {
+                            guestCompanions = compData;
+                        }
+                    }
                 }
             } catch (err) { }
         }
@@ -105,19 +117,18 @@
         }
 
         if ($guestPassesCount) {
-            // Un acompañante fijo solo tiene 1 cupo implícito (ya que es para él mismo), si es titular, usa los cupos
-            const displayPasses = guestData.es_acompanante ? 1 : guestData.cupos;
+            const displayPasses = guestData.es_acompanante ? 1 : (guestData.cupos || 1);
             $guestPassesCount.textContent = displayPasses;
             if ($maxPasses) $maxPasses.textContent = displayPasses;
 
             guestData._displayPasses = displayPasses; // Store for form loop
 
             if ($rsvpGuests) {
-                $rsvpGuests.innerHTML = '<option value="" disabled selected>Selecciona</option>';
+                $rsvpGuests.innerHTML = '<option value="" disabled selected>-- Selecciona cuántos cupos utilizarás --</option>';
                 for (let i = 1; i <= displayPasses; i++) {
                     const option = document.createElement('option');
                     option.value = i;
-                    option.textContent = i === 1 ? '1 persona' : `${i} personas`;
+                    option.textContent = i === 1 ? '1 persona (Asistiré solo/a)' : `${i} personas (Asistiremos ${i})`;
                     $rsvpGuests.appendChild(option);
                 }
             }
@@ -332,7 +343,7 @@
             cards.forEach((card, idx) => {
                 card.classList.remove('active', 'next-up', 'fading-out');
                 card.removeAttribute('data-state');
-                
+
                 if (idx === currentIndex) {
                     card.classList.add('active');
                     card.setAttribute('data-state', 'active');
@@ -450,7 +461,59 @@
         });
     }
 
-    // Name fields pre-fill is handled by the enhanced handler below (initCarousel section)
+    // Handle dropdown selection change for number of guests
+    if ($rsvpGuests && $rsvpNamesContainer) {
+        $rsvpGuests.addEventListener('change', function () {
+            const selectedCount = parseInt(this.value) || 0;
+            $rsvpNamesContainer.innerHTML = '';
+
+            if (selectedCount <= 0) return;
+
+            const panel = document.createElement('div');
+            panel.className = 'rsvp-attendees-panel';
+
+            const title = document.createElement('p');
+            title.className = 'attendees-panel-title';
+            title.style.margin = '16px 0 10px';
+            title.style.fontSize = '0.9rem';
+            title.style.color = '#E2C980';
+            title.style.fontWeight = '600';
+            title.innerHTML = `Nombres de las personas que asistirán (${selectedCount}):`;
+            panel.appendChild(title);
+
+            for (let i = 1; i <= selectedCount; i++) {
+                const group = document.createElement('div');
+                group.className = 'form-group-lux attendee-input-group';
+                group.style.marginBottom = '12px';
+
+                let defaultName = '';
+                let labelText = `Nombre del Asistente ${i}`;
+
+                if (i === 1) {
+                    defaultName = guestData.nombre !== CONFIG.defaultGuest ? guestData.nombre : '';
+                    labelText = `Asistente 1 (Titular)`;
+                } else {
+                    const companionIndex = i - 2;
+                    if (guestCompanions[companionIndex] && guestCompanions[companionIndex].nombre && !guestCompanions[companionIndex].nombre.includes('#')) {
+                        defaultName = guestCompanions[companionIndex].nombre;
+                    }
+                    labelText = `Asistente ${i}`;
+                }
+
+                group.innerHTML = `
+                    <label for="attendee_${i}" style="display:block; font-size:0.8rem; color:rgba(255,255,255,0.7); margin-bottom:4px;">${labelText}</label>
+                    <input type="text" id="attendee_${i}" name="attendee_${i}" 
+                           value="${defaultName}" 
+                           placeholder="Nombre completo del asistente ${i}" 
+                           required class="input-attendee-name"
+                           style="width:100%; padding:10px 14px; background:rgba(255,255,255,0.06); border:1px solid rgba(201,165,80,0.3); border-radius:6px; color:#fff; font-size:0.9rem;">
+                `;
+                panel.appendChild(group);
+            }
+
+            $rsvpNamesContainer.appendChild(panel);
+        });
+    }
 
     // RSVP Form submission → Confirmation & Supabase Sync
     if ($rsvpForm) {
