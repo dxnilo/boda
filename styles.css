@@ -2475,7 +2475,7 @@ button {
     color: rgba(255, 255, 255, 0.8);
 }
 
-/* ═════ RSVP Member Checklist Cards ═════ */
+/* ═════ RSVP Selectable Member Cards ═════ */
 .rsvp-members-checklist-wrapper {
     display: flex;
     flex-direction: column;
@@ -2486,29 +2486,31 @@ button {
 .member-check-card {
     display: flex;
     align-items: center;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(201, 165, 80, 0.25);
+    background: #FFFFFF;
+    border: 2px solid #E5E7EB;
     border-radius: 10px;
-    padding: 12px 16px;
+    padding: 14px 18px;
     cursor: pointer;
-    transition: all 0.25s ease;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     user-select: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
 .member-check-card:hover {
-    background: rgba(201, 165, 80, 0.08);
-    border-color: rgba(201, 165, 80, 0.5);
+    border-color: var(--gold, #C9A550);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(201, 165, 80, 0.2);
 }
 
 .member-check-card.selected {
-    background: rgba(201, 165, 80, 0.15);
+    background: #FFFFFF;
     border-color: var(--gold, #C9A550);
-    box-shadow: 0 4px 15px rgba(201, 165, 80, 0.12);
+    box-shadow: 0 4px 16px rgba(201, 165, 80, 0.3);
 }
 
 .member-checkbox-input {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     accent-color: var(--gold, #C9A550);
     cursor: pointer;
     margin-right: 14px;
@@ -2523,30 +2525,31 @@ button {
 }
 
 .member-name-text {
-    font-size: 0.95rem;
-    font-weight: 500;
-    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #111827;
+    /* Texto NEGRO claro y fácil de leer */
 }
 
 .badge-member-tag {
     font-size: 0.72rem;
-    padding: 3px 8px;
-    border-radius: 4px;
-    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 700;
     letter-spacing: 0.5px;
     text-transform: uppercase;
 }
 
 .badge-member-tag.primary {
-    background: rgba(201, 165, 80, 0.25);
-    color: var(--gold-light, #E2C980);
-    border: 1px solid rgba(201, 165, 80, 0.4);
+    background: #FEF3C7;
+    color: #92400E;
+    border: 1px solid #F59E0B;
 }
 
 .badge-member-tag.companion {
-    background: rgba(255, 255, 255, 0.08);
-    color: rgba(255, 255, 255, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: #F3F4F6;
+    color: #4B5563;
+    border: 1px solid #D1D5DB;
 }
 
 /* ══════════════════════════════════════════════════════════════
