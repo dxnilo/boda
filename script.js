@@ -164,37 +164,46 @@
         }
     }
 
-    // Render attendee cards pre-filled based on selected dropdown count
+    // Render ALL attendee cards and sync selection with quantity dropdown
     function renderAttendeesForCount(count) {
         if (!$rsvpNamesContainer) return;
         $rsvpNamesContainer.innerHTML = '';
 
-        const selectedCount = parseInt(count) || allInvitationMembers.length || 1;
+        const initialCheckedCount = parseInt(count) || allInvitationMembers.length || 1;
         const container = document.createElement('div');
         container.className = 'rsvp-members-checklist-wrapper';
 
         const title = document.createElement('p');
-        title.style.fontSize = '0.85rem';
+        title.className = 'attendees-section-title';
+        title.style.fontSize = '0.88rem';
         title.style.color = '#E2C980';
-        title.style.margin = '10px 0 6px';
+        title.style.margin = '12px 0 8px';
         title.style.fontWeight = '600';
-        title.textContent = `Asistentes incluidos (${selectedCount}):`;
+
+        function updateTitleAndDropdown() {
+            const checkedBoxes = container.querySelectorAll('input[name="attending_member"]:checked');
+            const totalChecked = checkedBoxes.length;
+            title.textContent = `Toca para seleccionar a los asistentes (${totalChecked} de ${allInvitationMembers.length} seleccionados):`;
+
+            // Sync dropdown value if valid option exists
+            if ($rsvpGuests && totalChecked > 0 && totalChecked <= allInvitationMembers.length) {
+                $rsvpGuests.value = totalChecked;
+            }
+        }
+
         container.appendChild(title);
 
-        for (let idx = 0; idx < selectedCount; idx++) {
-            const m = allInvitationMembers[idx] || {
-                nombre: `Acompañante ${idx + 1}`,
-                isPrimary: false
-            };
+        allInvitationMembers.forEach((m, idx) => {
+            const isInitiallyChecked = idx < initialCheckedCount;
 
             const card = document.createElement('div');
-            card.className = 'member-check-card selected';
+            card.className = isInitiallyChecked ? 'member-check-card selected' : 'member-check-card';
 
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.name = 'attending_member';
             checkbox.value = m.nombre;
-            checkbox.checked = true;
+            checkbox.checked = isInitiallyChecked;
             checkbox.id = `member_check_${idx}`;
             checkbox.className = 'member-checkbox-input';
 
@@ -222,12 +231,14 @@
                 } else {
                     card.classList.remove('selected');
                 }
+                updateTitleAndDropdown();
             });
 
             container.appendChild(card);
-        }
+        });
 
         $rsvpNamesContainer.appendChild(container);
+        updateTitleAndDropdown();
     }
 
     applyPersonalization();
