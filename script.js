@@ -194,7 +194,7 @@
         container.appendChild(title);
 
         allInvitationMembers.forEach((m, idx) => {
-            const isInitiallyChecked = idx < initialCheckedCount;
+            const isInitiallyChecked = true; // Todos los integrantes arrancan seleccionados por defecto
 
             const card = document.createElement('div');
             card.className = isInitiallyChecked ? 'member-check-card selected' : 'member-check-card';
