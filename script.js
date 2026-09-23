@@ -149,17 +149,44 @@
             const displayPasses = guestData.es_acompanante ? 1 : (guestData.cupos || 1);
             $guestPassesCount.textContent = displayPasses;
             if ($maxPasses) $maxPasses.textContent = displayPasses;
+
+            // Populate quantity dropdown
+            if ($rsvpGuests) {
+                $rsvpGuests.innerHTML = '';
+                for (let i = 1; i <= displayPasses; i++) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = i === 1 ? '1 persona' : `${i} personas`;
+                    if (i === displayPasses) option.selected = true; // Pre-select max cupos by default
+                    $rsvpGuests.appendChild(option);
+                }
+            }
         }
     }
 
-    function renderChecklist() {
+    // Render attendee cards pre-filled based on selected dropdown count
+    function renderAttendeesForCount(count) {
         if (!$rsvpNamesContainer) return;
         $rsvpNamesContainer.innerHTML = '';
 
+        const selectedCount = parseInt(count) || allInvitationMembers.length || 1;
         const container = document.createElement('div');
         container.className = 'rsvp-members-checklist-wrapper';
 
-        allInvitationMembers.forEach((m, idx) => {
+        const title = document.createElement('p');
+        title.style.fontSize = '0.85rem';
+        title.style.color = '#E2C980';
+        title.style.margin = '10px 0 6px';
+        title.style.fontWeight = '600';
+        title.textContent = `Asistentes incluidos (${selectedCount}):`;
+        container.appendChild(title);
+
+        for (let idx = 0; idx < selectedCount; idx++) {
+            const m = allInvitationMembers[idx] || {
+                nombre: `Acompañante ${idx + 1}`,
+                isPrimary: false
+            };
+
             const card = document.createElement('div');
             card.className = 'member-check-card selected';
 
@@ -198,7 +225,7 @@
             });
 
             container.appendChild(card);
-        });
+        }
 
         $rsvpNamesContainer.appendChild(container);
     }
@@ -510,8 +537,15 @@
                 $rsvpDetailsYes.style.display = 'block';
                 $rsvpDetailsNo.style.display = 'none';
                 $rsvpMessageGroup.style.display = 'block';
-                renderChecklist();
+                const currentCount = $rsvpGuests ? $rsvpGuests.value : (allInvitationMembers.length || 1);
+                renderAttendeesForCount(currentCount);
             }
+        });
+    }
+
+    if ($rsvpGuests) {
+        $rsvpGuests.addEventListener('change', function () {
+            renderAttendeesForCount(this.value);
         });
     }
 
