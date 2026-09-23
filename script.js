@@ -91,15 +91,17 @@
     // ══════════════════════════════════════════════════════════════
 
     let guestCompanions = [];
+    let allInvitationMembers = [];
 
     async function applyPersonalization() {
+        allInvitationMembers = [];
         if (guestCode && sb) {
             try {
                 const { data, error } = await sb.from('guests').select('*').eq('codigo', guestCode).single();
                 if (data) {
                     guestData = { ...data };
 
-                    // Also query companion names if primary guest
+                    // Fetch companions if primary guest
                     if (!guestData.es_acompanante) {
                         const { data: compData } = await sb.from('guests')
                             .select('*')
@@ -112,6 +114,33 @@
             } catch (err) { }
         }
 
+        // Build list of all invitation members
+        allInvitationMembers.push({
+            codigo: guestData.codigo || 'DEF',
+            nombre: guestData.nombre || CONFIG.defaultGuest,
+            isPrimary: true
+        });
+
+        if (guestCompanions && guestCompanions.length > 0) {
+            guestCompanions.forEach(c => {
+                // Ignore raw slot names like #1 or #2
+                const cleanName = c.nombre && !c.nombre.includes('#') ? c.nombre : null;
+                allInvitationMembers.push({
+                    codigo: c.codigo,
+                    nombre: cleanName || `Acompañante de ${guestData.nombre}`,
+                    isPrimary: false
+                });
+            });
+        } else if (guestData.cupos > 1) {
+            for (let i = 2; i <= guestData.cupos; i++) {
+                allInvitationMembers.push({
+                    codigo: `${guestData.codigo}-X${i}`,
+                    nombre: `Acompañante ${i}`,
+                    isPrimary: false
+                });
+            }
+        }
+
         if ($guestName) {
             $guestName.textContent = guestData.nombre;
         }
@@ -120,19 +149,58 @@
             const displayPasses = guestData.es_acompanante ? 1 : (guestData.cupos || 1);
             $guestPassesCount.textContent = displayPasses;
             if ($maxPasses) $maxPasses.textContent = displayPasses;
-
-            guestData._displayPasses = displayPasses; // Store for form loop
-
-            if ($rsvpGuests) {
-                $rsvpGuests.innerHTML = '<option value="" disabled selected>-- Selecciona cuántos cupos utilizarás --</option>';
-                for (let i = 1; i <= displayPasses; i++) {
-                    const option = document.createElement('option');
-                    option.value = i;
-                    option.textContent = i === 1 ? '1 persona (Asistiré solo/a)' : `${i} personas (Asistiremos ${i})`;
-                    $rsvpGuests.appendChild(option);
-                }
-            }
         }
+    }
+
+    function renderChecklist() {
+        if (!$rsvpNamesContainer) return;
+        $rsvpNamesContainer.innerHTML = '';
+
+        const container = document.createElement('div');
+        container.className = 'rsvp-members-checklist-wrapper';
+
+        allInvitationMembers.forEach((m, idx) => {
+            const card = document.createElement('div');
+            card.className = 'member-check-card selected';
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.name = 'attending_member';
+            checkbox.value = m.nombre;
+            checkbox.checked = true;
+            checkbox.id = `member_check_${idx}`;
+            checkbox.className = 'member-checkbox-input';
+
+            const label = document.createElement('label');
+            label.htmlFor = `member_check_${idx}`;
+            label.className = 'member-check-label';
+
+            const nameSpan = document.createElement('span');
+            nameSpan.className = 'member-name-text';
+            nameSpan.textContent = m.nombre;
+
+            const badge = document.createElement('span');
+            badge.className = m.isPrimary ? 'badge-member-tag primary' : 'badge-member-tag companion';
+            badge.textContent = m.isPrimary ? 'Titular' : 'Acompañante';
+
+            label.appendChild(nameSpan);
+            label.appendChild(badge);
+
+            card.appendChild(checkbox);
+            card.appendChild(label);
+
+            checkbox.addEventListener('change', function () {
+                if (this.checked) {
+                    card.classList.add('selected');
+                } else {
+                    card.classList.remove('selected');
+                }
+            });
+
+            container.appendChild(card);
+        });
+
+        $rsvpNamesContainer.appendChild(container);
     }
 
     applyPersonalization();
@@ -442,8 +510,7 @@
                 $rsvpDetailsYes.style.display = 'block';
                 $rsvpDetailsNo.style.display = 'none';
                 $rsvpMessageGroup.style.display = 'block';
-                // Make guests select required
-                $rsvpGuests.required = true;
+                renderChecklist();
             }
         });
     }
@@ -454,64 +521,8 @@
                 $rsvpDetailsYes.style.display = 'none';
                 $rsvpDetailsNo.style.display = 'block';
                 $rsvpMessageGroup.style.display = 'none';
-                // Remove required from guests and name fields
-                $rsvpGuests.required = false;
                 $rsvpNamesContainer.innerHTML = '';
             }
-        });
-    }
-
-    // Handle dropdown selection change for number of guests
-    if ($rsvpGuests && $rsvpNamesContainer) {
-        $rsvpGuests.addEventListener('change', function () {
-            const selectedCount = parseInt(this.value) || 0;
-            $rsvpNamesContainer.innerHTML = '';
-
-            if (selectedCount <= 0) return;
-
-            const panel = document.createElement('div');
-            panel.className = 'rsvp-attendees-panel';
-
-            const title = document.createElement('p');
-            title.className = 'attendees-panel-title';
-            title.style.margin = '16px 0 10px';
-            title.style.fontSize = '0.9rem';
-            title.style.color = '#E2C980';
-            title.style.fontWeight = '600';
-            title.innerHTML = `Nombres de las personas que asistirán (${selectedCount}):`;
-            panel.appendChild(title);
-
-            for (let i = 1; i <= selectedCount; i++) {
-                const group = document.createElement('div');
-                group.className = 'form-group-lux attendee-input-group';
-                group.style.marginBottom = '12px';
-
-                let defaultName = '';
-                let labelText = `Nombre del Asistente ${i}`;
-
-                if (i === 1) {
-                    defaultName = guestData.nombre !== CONFIG.defaultGuest ? guestData.nombre : '';
-                    labelText = `Asistente 1 (Titular)`;
-                } else {
-                    const companionIndex = i - 2;
-                    if (guestCompanions[companionIndex] && guestCompanions[companionIndex].nombre && !guestCompanions[companionIndex].nombre.includes('#')) {
-                        defaultName = guestCompanions[companionIndex].nombre;
-                    }
-                    labelText = `Asistente ${i}`;
-                }
-
-                group.innerHTML = `
-                    <label for="attendee_${i}" style="display:block; font-size:0.8rem; color:rgba(255,255,255,0.7); margin-bottom:4px;">${labelText}</label>
-                    <input type="text" id="attendee_${i}" name="attendee_${i}" 
-                           value="${defaultName}" 
-                           placeholder="Nombre completo del asistente ${i}" 
-                           required class="input-attendee-name"
-                           style="width:100%; padding:10px 14px; background:rgba(255,255,255,0.06); border:1px solid rgba(201,165,80,0.3); border-radius:6px; color:#fff; font-size:0.9rem;">
-                `;
-                panel.appendChild(group);
-            }
-
-            $rsvpNamesContainer.appendChild(panel);
         });
     }
 
@@ -528,33 +539,43 @@
 
             const formData = new FormData($rsvpForm);
             const confirm = formData.get('confirm');
-            const guests = formData.get('guests');
             const message = formData.get('message') || '';
             const messageNo = formData.get('message_no') || '';
 
-            const attendeeNames = [];
-            const count = parseInt(guests) || 1;
             if (confirm === 'si') {
-                for (let i = 1; i <= count; i++) {
-                    const name = formData.get(`attendee_${i}`);
-                    if (name) attendeeNames.push(name.trim());
+                const checkedBoxes = document.querySelectorAll('input[name="attending_member"]:checked');
+                const confirmedNames = Array.from(checkedBoxes).map(cb => cb.value);
+                const count = confirmedNames.length;
+
+                if (count === 0) {
+                    alert('Por favor selecciona al menos una persona que asistirá, o elige "No podré asistir".');
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = 'Confirmar Asistencia';
+                    }
+                    return;
                 }
-            }
 
-            // Build notes field (Combining message and attendee names if any)
-            let combinedNotes = confirm === 'si' ? message : messageNo;
-            if (confirm === 'si' && attendeeNames.length > 0) {
-                combinedNotes = `Acompañantes confirmados: ${attendeeNames.join(', ')} | Mensaje: ${combinedNotes}`;
-            }
+                const newStatus = 'Confirmado';
+                const notes = `Confirmados (${count}/${allInvitationMembers.length}): ${confirmedNames.join(', ')} | Mensaje: ${message}`;
 
-            const newStatus = confirm === 'si' ? 'Confirmado' : 'Declinado';
-
-            if (guestData.codigo && sb) {
-                await sb.from('guests').update({
-                    estado: newStatus,
-                    restricciones: combinedNotes,
-                    confirmado_en: new Date().toISOString()
-                }).eq('codigo', guestData.codigo);
+                if (guestData.codigo && sb) {
+                    await sb.from('guests').update({
+                        estado: newStatus,
+                        cupos: count,
+                        restricciones: notes,
+                        confirmado_en: new Date().toISOString()
+                    }).eq('codigo', guestData.codigo);
+                }
+            } else {
+                if (guestData.codigo && sb) {
+                    await sb.from('guests').update({
+                        estado: 'Declinado',
+                        cupos: 0,
+                        restricciones: messageNo ? `Mensaje: ${messageNo}` : 'No podrá asistir',
+                        confirmado_en: new Date().toISOString()
+                    }).eq('codigo', guestData.codigo);
+                }
             }
 
             // Show feedback toast to guest

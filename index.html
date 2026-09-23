@@ -480,14 +480,16 @@
                 <!-- Dynamic section: appears when "Sí" is selected -->
                 <div id="rsvp-details-yes" class="rsvp-details-section" style="display:none">
                     <div class="form-group-lux">
-                        <label for="rsvp-guests">¿Cuántos cupos utilizarás? (máx. <span
-                                id="max-passes">2</span>)</label>
-                        <select id="rsvp-guests" name="guests" required>
-                            <option value="" disabled selected>Selecciona</option>
-                        </select>
-                    </div>
-                    <div id="rsvp-names-container" class="rsvp-names-container">
-                        <!-- Dynamic name fields will be injected here -->
+                        <label id="rsvp-checklist-label" style="margin-bottom: 4px;">Selecciona las personas que
+                            asistirán:</label>
+                        <p class="rsvp-checklist-subtext"
+                            style="font-size: 0.8rem; color: rgba(255,255,255,0.7); margin-bottom: 12px; font-style: italic;">
+                            (Todos están seleccionados por defecto. Si alguien no puede ir, simplemente desmarca su
+                            nombre)
+                        </p>
+                        <div id="rsvp-names-container" class="rsvp-names-container">
+                            <!-- Checkboxes for each guest/family member injected here -->
+                        </div>
                     </div>
                 </div>
 

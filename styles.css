@@ -2475,6 +2475,80 @@ button {
     color: rgba(255, 255, 255, 0.8);
 }
 
+/* ═════ RSVP Member Checklist Cards ═════ */
+.rsvp-members-checklist-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.member-check-card {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(201, 165, 80, 0.25);
+    border-radius: 10px;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    user-select: none;
+}
+
+.member-check-card:hover {
+    background: rgba(201, 165, 80, 0.08);
+    border-color: rgba(201, 165, 80, 0.5);
+}
+
+.member-check-card.selected {
+    background: rgba(201, 165, 80, 0.15);
+    border-color: var(--gold, #C9A550);
+    box-shadow: 0 4px 15px rgba(201, 165, 80, 0.12);
+}
+
+.member-checkbox-input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--gold, #C9A550);
+    cursor: pointer;
+    margin-right: 14px;
+}
+
+.member-check-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    cursor: pointer;
+}
+
+.member-name-text {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #fff;
+}
+
+.badge-member-tag {
+    font-size: 0.72rem;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.badge-member-tag.primary {
+    background: rgba(201, 165, 80, 0.25);
+    color: var(--gold-light, #E2C980);
+    border: 1px solid rgba(201, 165, 80, 0.4);
+}
+
+.badge-member-tag.companion {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
 /* ══════════════════════════════════════════════════════════════
    HERO ENHANCEMENTS
    ══════════════════════════════════════════════════════════════ */
