@@ -401,8 +401,8 @@ button {
 
 .section-countdown-luxury {
     position: relative;
-    background: var(--white);
-    padding: 20px 0 60px;
+    background: #FFFFFF;
+    padding: 20px 0 64px;
     text-align: center;
     overflow: hidden;
 }
@@ -410,7 +410,7 @@ button {
 .countdown-columns-bg {
     position: relative;
     width: 100%;
-    max-width: var(--max-width);
+    max-width: 540px;
     margin: 0 auto;
     pointer-events: none;
     user-select: none;
@@ -418,52 +418,52 @@ button {
 
 .columns-img {
     width: 100%;
-    max-height: 420px;
+    max-height: 480px;
     object-fit: contain;
     margin: 0 auto;
-    opacity: 0.92;
+    opacity: 0.95;
 }
 
 .countdown-content {
     position: relative;
     z-index: 2;
     padding: 0 24px;
-    margin-top: -30px;
+    margin-top: -10px;
 }
 
 .countdown-title {
     font-family: var(--font-script);
     font-size: clamp(2.6rem, 10vw, 3.6rem);
     color: var(--text-dark);
-    margin-bottom: 6px;
+    margin-bottom: 8px;
 }
 
 .countdown-subtitle {
     font-family: var(--font-serif);
-    font-size: 0.85rem;
+    font-size: 1rem;
     font-style: italic;
     color: var(--text-medium);
     letter-spacing: 0.5px;
-    margin-bottom: 28px;
+    margin-bottom: 32px;
 }
 
 .countdown-numbers {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 16px;
 }
 
 .countdown-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
 }
 
 .count-number {
     font-family: var(--font-serif);
-    font-size: clamp(2.2rem, 9vw, 3rem);
+    font-size: clamp(2.6rem, 10vw, 3.4rem);
     font-weight: 300;
     color: var(--text-dark);
     line-height: 1;
@@ -471,18 +471,18 @@ button {
 
 .count-label {
     font-family: var(--font-sans);
-    font-size: 0.55rem;
+    font-size: 0.65rem;
     font-weight: 600;
-    letter-spacing: 2px;
+    letter-spacing: 2.5px;
     text-transform: uppercase;
     color: var(--text-light);
 }
 
 .countdown-sep {
     font-family: var(--font-serif);
-    font-size: 2rem;
+    font-size: 2.2rem;
     color: var(--gold);
-    margin-bottom: 18px;
+    margin-bottom: 20px;
     opacity: 0.6;
 }
 
@@ -551,7 +551,7 @@ button {
 }
 
 /* ══════════════════════════════════════════════════════════════
-   OUR JOURNEY (Timeline with Curtains)
+   OUR JOURNEY (Timeline with Photo Hero)
    ══════════════════════════════════════════════════════════════ */
 
 .section-journey {
@@ -561,22 +561,22 @@ button {
     overflow: hidden;
 }
 
-.journey-curtains {
+.journey-photo-hero {
     width: 100%;
-    pointer-events: none;
-    user-select: none;
     line-height: 0;
+    overflow: hidden;
 }
 
-.curtains-img {
+.journey-photo-img {
     width: 100%;
-    max-height: 320px;
+    max-height: 380px;
     object-fit: cover;
-    object-position: center top;
+    object-position: center 30%;
+    display: block;
 }
 
 .journey-content {
-    padding: 20px 28px 0;
+    padding: 28px 28px 0;
     max-width: var(--max-width);
     margin: 0 auto;
     text-align: center;
@@ -623,6 +623,7 @@ button {
     color: var(--text-medium);
     line-height: 1.7;
     font-style: italic;
+    text-align: justify;
 }
 
 .journey-divider {
@@ -650,7 +651,7 @@ button {
 
 .order-subtitle {
     font-family: var(--font-sans);
-    font-size: 0.6rem;
+    font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 4px;
     text-transform: uppercase;
@@ -685,8 +686,8 @@ button {
 }
 
 .order-dot {
-    width: 38px;
-    height: 38px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     background: var(--white);
     border: 1.5px solid var(--gold-light);
@@ -778,19 +779,15 @@ button {
 }
 
 .event-details-label {
-    font-family: var(--font-sans);
-    font-size: 0.55rem;
-    font-weight: 600;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--text-light);
+    display: none;
 }
 
 .event-details-title {
     font-family: var(--font-script);
-    font-size: clamp(1.8rem, 7vw, 2.5rem);
+    font-size: clamp(1.9rem, 7.5vw, 2.6rem);
     color: var(--text-dark);
     line-height: 1.1;
+    margin-top: -8px;
 }
 
 .event-details-separator {
@@ -802,10 +799,10 @@ button {
 
 .event-details-date {
     font-family: var(--font-serif);
-    font-size: 0.85rem;
-    font-weight: 500;
+    font-size: clamp(1.1rem, 4.5vw, 1.35rem);
+    font-weight: 600;
     color: var(--text-dark);
-    letter-spacing: 0.5px;
+    letter-spacing: 0.8px;
 }
 
 .event-details-time {
@@ -820,7 +817,7 @@ button {
 
 .event-details-venue {
     font-family: var(--font-serif);
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-style: italic;
     color: var(--text-dark);
     font-weight: 500;
@@ -832,6 +829,12 @@ button {
     color: var(--text-light);
     line-height: 1.4;
     text-align: center;
+}
+
+.event-details-btn-single {
+    width: 100%;
+    margin-top: 4px;
+    margin-bottom: 2px;
 }
 
 .event-details-btns {
@@ -915,7 +918,7 @@ button {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 32px;
     max-width: 380px;
     margin: 0 auto;
 }
@@ -931,20 +934,20 @@ button {
     letter-spacing: 2px;
     text-transform: uppercase;
     color: var(--gold-dark);
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 .parent-luxury-names {
-    font-family: var(--font-serif);
-    font-size: 1rem;
+    font-family: var(--font-script);
+    font-size: clamp(1.6rem, 6vw, 2rem);
     color: var(--text-dark);
-    line-height: 1.8;
-    font-style: italic;
+    line-height: 1.6;
+    font-style: normal;
 }
 
 .parent-luxury-names span {
     font-family: var(--font-script);
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     color: var(--gold-dark);
     font-style: normal;
 }
@@ -970,8 +973,8 @@ button {
 
 .dresscode-sub {
     font-family: var(--font-sans);
-    font-size: 0.62rem;
-    font-weight: 500;
+    font-size: 0.72rem;
+    font-weight: 600;
     letter-spacing: 3px;
     text-transform: uppercase;
     color: var(--text-light);
@@ -1036,12 +1039,12 @@ button {
 
 .dresscode-note-lux {
     font-family: var(--font-serif);
-    font-size: 0.88rem;
+    font-size: 1.05rem;
     color: var(--text-medium);
     font-style: italic;
-    max-width: 300px;
+    max-width: 360px;
     margin: 0 auto;
-    line-height: 1.6;
+    line-height: 1.7;
 }
 
 .dresscode-note-lux strong {
@@ -1255,6 +1258,18 @@ button {
     flex-wrap: wrap;
 }
 
+.form-group-lux--centered {
+    text-align: center;
+}
+
+.form-group-lux--centered label {
+    text-align: center;
+}
+
+.radio-group-lux--centered {
+    justify-content: center;
+}
+
 .radio-lux {
     display: flex;
     align-items: center;
@@ -1355,6 +1370,11 @@ button {
     color: var(--gold-dark);
     text-transform: uppercase;
     margin-bottom: 10px;
+}
+
+.footer-monogram-a {
+    font-family: 'Alex Brush', var(--font-script), cursive;
+    font-size: 1.05em;
 }
 
 .footer-msg-lux {
@@ -1461,27 +1481,27 @@ button {
     justify-content: center;
     gap: 10px;
     margin-top: 24px;
-    padding: 14px 24px;
-    background: linear-gradient(135deg, rgba(180, 140, 100, 0.08), rgba(180, 140, 100, 0.04));
-    border: 1px solid rgba(180, 140, 100, 0.2);
+    padding: 18px 24px;
+    background: linear-gradient(135deg, rgba(180, 140, 100, 0.12), rgba(180, 140, 100, 0.06));
+    border: 1px solid rgba(180, 140, 100, 0.25);
     border-radius: 8px;
-    max-width: 340px;
+    max-width: 380px;
     margin-left: auto;
     margin-right: auto;
 }
 
 .no-kids-notice svg {
-    flex-shrink: 0;
-    color: var(--gold-primary, #b48c64);
-    opacity: 0.7;
+    display: none;
 }
 
 .no-kids-notice span {
     font-family: var(--font-serif, 'Cormorant Garamond', serif);
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--text-dark, #3d3024);
-    letter-spacing: 0.04em;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-dark, #1A1410);
+    letter-spacing: 0.03em;
+    line-height: 1.6;
+    text-align: center;
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -2561,14 +2581,14 @@ button {
     min-height: 100dvh;
 }
 
-/* Force "A" capital styling - sharp/pointy serif A */
+/* Force "A" capital styling — elegant calligraphic A */
 .name-capital-a {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1em;
-    font-weight: 500;
+    font-family: 'Alex Brush', var(--font-script), cursive;
+    font-size: 1.05em;
+    font-weight: 400;
     font-style: normal;
     display: inline;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.01em;
 }
 
 .hero-getting-married {
@@ -2818,6 +2838,7 @@ button {
     font-size: 0.98rem;
     color: var(--text-medium);
     line-height: 1.8;
+    text-align: justify;
 }
 
 .romantic-quote-text {
@@ -2852,9 +2873,10 @@ button {
 }
 
 .no-kids-notice span {
-    font-size: 0.94rem;
-    color: var(--text-medium);
+    font-size: 1.05rem;
+    color: var(--text-dark);
     line-height: 1.6;
+    font-weight: 600;
 }
 
 .footer-msg-lux {
@@ -2880,4 +2902,65 @@ button {
 .rsvp-passes-info {
     font-size: 0.97rem;
     margin-top: 8px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SCATTERED PHOTOS (Distributed throughout the invitation)
+   ══════════════════════════════════════════════════════════════ */
+
+.section-scattered-photo {
+    background: var(--white);
+    padding: 32px 24px;
+    text-align: center;
+}
+
+.scattered-photo-wrapper {
+    max-width: 380px;
+    margin: 0 auto;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow:
+        0 8px 32px rgba(44, 36, 22, 0.12),
+        0 2px 8px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(201, 165, 80, 0.15);
+}
+
+.scattered-photo-wrapper--wide {
+    max-width: 420px;
+}
+
+.scattered-photo-img {
+    width: 100%;
+    height: auto;
+    max-height: 480px;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+}
+
+@media (max-width: 420px) {
+    .scattered-photo-wrapper {
+        max-width: 320px;
+    }
+
+    .scattered-photo-wrapper--wide {
+        max-width: 350px;
+    }
+
+    .scattered-photo-img {
+        max-height: 400px;
+    }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ALBUM SECTION - SIMPLIFIED (header only, no carousel)
+   ══════════════════════════════════════════════════════════════ */
+
+.section-album .album-stack-container,
+.section-album .album-counter {
+    display: none;
+}
+
+.section-album {
+    padding-bottom: 20px;
 }

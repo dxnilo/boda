@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Alex+Brush&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -76,7 +76,7 @@
                 <h1 class="hero-names reveal">
                     <span class="name-script">Jean</span>
                     <span class="name-amp">&amp;</span>
-                    <span class="name-script">Ana</span>
+                    <span class="name-script"><span class="name-capital-a">A</span>na</span>
                 </h1>
                 <div class="hero-divider-line reveal"></div>
                 <p class="hero-date reveal">19 de Diciembre, 2026</p>
@@ -118,7 +118,14 @@
             </div>
         </section>
 
-        <!-- ─── NUESTRAS FOTOS (Stacked Album Carousel) ─── -->
+        <!-- ─── PHOTO 1: Transition between Countdown and Nuestras Fotos ─── -->
+        <section class="section-scattered-photo reveal">
+            <div class="scattered-photo-wrapper">
+                <img src="fotos_casados/_DSC8004.JPG.jpeg" alt="Jean y Ana" class="scattered-photo-img" loading="lazy">
+            </div>
+        </section>
+
+        <!-- ─── NUESTRAS FOTOS (Header only, no gallery/carousel) ─── -->
         <section class="section-album">
             <div class="album-chandelier reveal">
                 <img src="assets/golden_chandelier.jpg" alt="" aria-hidden="true">
@@ -128,57 +135,12 @@
                 <h2 class="album-title">Nuestras Fotos</h2>
                 <div class="album-ornament">✦</div>
             </div>
-            <div class="album-stack-container reveal" id="photo-carousel">
-                <div class="album-stack" id="carousel-track">
-                    <div class="album-card" data-index="0">
-                        <div class="album-card-inner">
-                            <img src="fotos_casados/_DSC8004.JPG.jpeg" alt="Jean y Ana - Foto 1">
-                            <div class="album-card-caption"><span>01</span> · Jean & Ana</div>
-                        </div>
-                    </div>
-                    <div class="album-card" data-index="1">
-                        <div class="album-card-inner">
-                            <img src="fotos_casados/_DSC8007.JPG.jpeg" alt="Jean y Ana - Foto 2">
-                            <div class="album-card-caption"><span>02</span> · Jean & Ana</div>
-                        </div>
-                    </div>
-                    <div class="album-card" data-index="2">
-                        <div class="album-card-inner">
-                            <img src="fotos_casados/_DSC8014.JPG.jpeg" alt="Jean y Ana - Foto 3">
-                            <div class="album-card-caption"><span>03</span> · Jean & Ana</div>
-                        </div>
-                    </div>
-                    <div class="album-card" data-index="3">
-                        <div class="album-card-inner">
-                            <img src="fotos_casados/_DSC8033.JPG.jpeg" alt="Jean y Ana - Foto 4">
-                            <div class="album-card-caption"><span>04</span> · Jean & Ana</div>
-                        </div>
-                    </div>
-                    <div class="album-card" data-index="4">
-                        <div class="album-card-inner">
-                            <img src="fotos_casados/_DSC8039.JPG.jpeg" alt="Jean y Ana - Foto 5">
-                            <div class="album-card-caption"><span>05</span> · Jean & Ana</div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Navigation -->
-                <button class="album-nav album-nav--prev" id="carousel-prev" aria-label="Anterior">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="15 18 9 12 15 6" />
-                    </svg>
-                </button>
-                <button class="album-nav album-nav--next" id="carousel-next" aria-label="Siguiente">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="9 18 15 12 9 6" />
-                    </svg>
-                </button>
-            </div>
-            <div class="album-counter reveal" id="carousel-dots">
-                <button class="album-dot active" data-index="0"></button>
-                <button class="album-dot" data-index="1"></button>
-                <button class="album-dot" data-index="2"></button>
-                <button class="album-dot" data-index="3"></button>
-                <button class="album-dot" data-index="4"></button>
+        </section>
+
+        <!-- ─── PHOTO 2: Between Nuestras Fotos and Parents ─── -->
+        <section class="section-scattered-photo reveal">
+            <div class="scattered-photo-wrapper">
+                <img src="fotos_casados/_DSC8007.JPG.jpeg" alt="Jean y Ana" class="scattered-photo-img" loading="lazy">
             </div>
         </section>
 
@@ -191,21 +153,29 @@
             </div>
             <div class="parents-grid-luxury">
                 <div class="parent-luxury reveal">
-                    <p class="parent-luxury-role">Padres del Novio</p>
-                    <p class="parent-luxury-names">Xiomara Ariza<br><span>&</span><br>José Charris</p>
+                    <p class="parent-luxury-role">Padres de la Novia</p>
+                    <p class="parent-luxury-names">Xiomara Posada<br><span>&</span><br>León Facette</p>
                 </div>
                 <div class="parents-ornament">✦</div>
                 <div class="parent-luxury reveal">
-                    <p class="parent-luxury-role">Padres de la Novia</p>
-                    <p class="parent-luxury-names">Xiomara Posada<br><span>&</span><br>León Facette</p>
+                    <p class="parent-luxury-role">Padres del Novio</p>
+                    <p class="parent-luxury-names">Xiomara Ariza<br><span>&</span><br>José Charris</p>
                 </div>
             </div>
         </section>
 
-        <!-- ─── OUR JOURNEY (Timeline with curtains) ─── -->
+        <!-- ─── PHOTO 3: Between Parents and Journey ─── -->
+        <section class="section-scattered-photo reveal">
+            <div class="scattered-photo-wrapper">
+                <img src="fotos_casados/_DSC8014.JPG.jpeg" alt="Jean y Ana" class="scattered-photo-img" loading="lazy">
+            </div>
+        </section>
+
+        <!-- ─── OUR JOURNEY (Timeline — curtain replaced by Photo 4) ─── -->
         <section class="section-journey">
-            <div class="journey-curtains">
-                <img src="assets/golden_curtains.jpg" alt="" class="curtains-img" aria-hidden="true">
+            <!-- Photo 4: Replaces the golden curtain -->
+            <div class="journey-photo-hero">
+                <img src="fotos_casados/_DSC8033.JPG.jpeg" alt="Jean y Ana" class="journey-photo-img" loading="lazy">
             </div>
             <div class="journey-content">
                 <h2 class="journey-title reveal">Nuestra Historia</h2>
@@ -245,13 +215,13 @@
                 <h2 class="order-title">Orden de Eventos</h2>
             </div>
             <div class="order-timeline">
+                <!-- Ceremonia — wedding rings icon -->
                 <div class="order-item reveal">
                     <div class="order-dot">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.5">
-                            <circle cx="12" cy="12" r="3" />
-                            <path
-                                d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="9" cy="12" r="5" />
+                            <circle cx="15" cy="12" r="5" />
                         </svg>
                     </div>
                     <div class="order-content">
@@ -260,13 +230,15 @@
                         <p class="order-desc">El momento más sagrado de nuestra historia</p>
                     </div>
                 </div>
+                <!-- Recepción — champagne glasses icon -->
                 <div class="order-item reveal">
                     <div class="order-dot">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.5">
-                            <path d="M9 18V5l12-2v13" />
-                            <circle cx="6" cy="18" r="3" />
-                            <circle cx="18" cy="16" r="3" />
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M8 22h8" />
+                            <path d="M12 17v5" />
+                            <path d="M7 2l2 8a4 4 0 0 0 6 0l2-8" />
+                            <path d="M5 2h14" />
                         </svg>
                     </div>
                     <div class="order-content">
@@ -275,36 +247,66 @@
                         <p class="order-desc">¡Que comience la celebración!</p>
                     </div>
                 </div>
+                <!-- Primer Baile — couple dancing icon -->
                 <div class="order-item reveal">
                     <div class="order-dot">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.5">
-                            <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
-                            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="8" cy="4" r="2" />
+                            <path d="M6 8c0 0 2-1 4 0s3 4 3 4l3 5" />
+                            <path d="M6 8l-2 8 4-1" />
+                            <circle cx="17" cy="4" r="2" />
+                            <path d="M18 8l2 8-4-1" />
+                            <path d="M18 8c0 0-1.5-1-3.5 0" />
                         </svg>
                     </div>
                     <div class="order-content">
-                        <span class="order-time">9:00 PM</span>
+                        <span class="order-time">9:30 PM</span>
                         <h3 class="order-event">Primer Baile</h3>
                         <p class="order-desc">Nuestro primer paso juntos como uno</p>
                     </div>
                 </div>
+                <!-- Cena — plate & cutlery icon -->
                 <div class="order-item reveal">
                     <div class="order-dot">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.5">
-                            <path
-                                d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
-                            <path
-                                d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="8" />
+                            <path d="M3 12h2M19 12h2" />
+                            <line x1="9" y1="8" x2="9" y2="16" />
+                            <path d="M15 8v3a2 2 0 0 1-2 2h0" />
+                            <line x1="15" y1="11" x2="15" y2="16" />
                         </svg>
                     </div>
                     <div class="order-content">
-                        <span class="order-time">12:00 AM</span>
-                        <h3 class="order-event">Despedida</h3>
-                        <p class="order-desc">El fin de un día perfecto, el inicio de nuestro para siempre</p>
+                        <span class="order-time">10:00 PM</span>
+                        <h3 class="order-event">Cena</h3>
+                        <p class="order-desc">Un brindis por el amor y por la vida que comienza juntos.</p>
                     </div>
                 </div>
+                <!-- Despedida — farewell sparkle icon -->
+                <div class="order-item reveal">
+                    <div class="order-dot">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2l1.5 4.5L18 8l-4.5 1.5L12 14l-1.5-4.5L6 8l4.5-1.5z" />
+                            <path d="M19 15l1 3 3 1-3 1-1 3-1-3-3-1 3-1z" />
+                            <path d="M5 17l.7 2.3L8 20l-2.3.7L5 23l-.7-2.3L2 20l2.3-.7z" />
+                        </svg>
+                    </div>
+                    <div class="order-content">
+                        <span class="order-time">2:30 AM</span>
+                        <h3 class="order-event">Despedida</h3>
+                        <p class="order-desc">El fin de una fiesta, el inicio de nuestra vida siempre</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── PHOTO 5: Replaces calendar element ─── -->
+        <section class="section-scattered-photo reveal">
+            <div class="scattered-photo-wrapper scattered-photo-wrapper--wide">
+                <img src="fotos_casados/_DSC8039.JPG.jpeg" alt="Jean y Ana" class="scattered-photo-img" loading="lazy">
             </div>
         </section>
 
@@ -316,13 +318,12 @@
             <div class="event-details-frame reveal">
                 <img src="assets/ornamental_frame.jpg" alt="" class="frame-bg" aria-hidden="true">
                 <div class="event-details-inner">
-                    <p class="event-details-label">ÚNETE A NUESTRA CELEBRACIÓN</p>
                     <h2 class="event-details-title">Detalles del Evento</h2>
                     <div class="event-details-separator"></div>
                     <p class="event-details-date">19 de Diciembre, 2026</p>
 
                     <p class="event-details-venue">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
                             style="vertical-align: middle; margin-right: 6px; color: var(--gold, #C9A550);">
                             <path d="M18 22V10l-6-5-6 5v12h12z" />
@@ -336,9 +337,20 @@
                     </p>
                     <p class="event-details-address">Parroquia Santa Rita de Cascia<br>Calle 3 #6-25, Plaza Principal ·
                         7:00 PM</p>
+                    <div class="event-details-btn-single">
+                        <a href="https://maps.app.goo.gl/HosvQ9vENBZ9vodf7?g_st=iw" target="_blank" rel="noopener"
+                            class="btn-event-detail" id="btn-open-maps-ceremonia">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                <circle cx="12" cy="10" r="3" />
+                            </svg>
+                            MAPA CEREMONIA
+                        </a>
+                    </div>
 
-                    <p class="event-details-venue" style="margin-top:14px">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    <p class="event-details-venue" style="margin-top:10px">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
                             style="vertical-align: middle; margin-right: 6px; color: var(--gold, #C9A550);">
                             <path d="M8 22h8" />
@@ -351,17 +363,7 @@
                         Recepción
                     </p>
                     <p class="event-details-address">Cabaña La Gloria · 8:00 PM</p>
-
-                    <div class="event-details-btns">
-                        <a href="https://maps.app.goo.gl/HosvQ9vENBZ9vodf7?g_st=iw" target="_blank" rel="noopener"
-                            class="btn-event-detail" id="btn-open-maps-ceremonia">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="1.5">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                                <circle cx="12" cy="10" r="3" />
-                            </svg>
-                            MAPA CEREMONIA
-                        </a>
+                    <div class="event-details-btn-single">
                         <a href="https://share.google/HMDIE9ZjXKbT3M0I3" target="_blank" rel="noopener"
                             class="btn-event-detail btn-event-detail--outline" id="btn-open-maps-recepcion">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -419,8 +421,7 @@
                     <p>Guayabera formal</p>
                 </div>
             </div>
-            <p class="dresscode-note-lux reveal">Se reservan los colores <strong>blanco, marfil, champagne,<br>verde
-                    oliva y palo de rosa</strong></p>
+            <p class="dresscode-note-lux reveal">Se reserva <strong>blanco, beige, tonos palo de rosa,<br>nude, azul claro y dorado.</strong></p>
         </section>
 
         <!-- ─── GIFTS ─── -->
@@ -437,10 +438,6 @@
             </div>
             <!-- No kids notice -->
             <div class="no-kids-notice reveal">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <circle cx="12" cy="12" r="10" />
-                    <path d="M12 8v4M12 16h.01" />
-                </svg>
                 <span>Adoramos a los más pequeños, sin embargo este evento está destinado solo para adultos. Esperamos
                     tu comprensión.</span>
             </div>
@@ -461,9 +458,9 @@
             </div>
             <p class="rsvp-deadline reveal">Favor confirmar antes del <strong>1 de Noviembre, 2026</strong></p>
             <form id="rsvp-form" class="rsvp-form-luxury reveal">
-                <div class="form-group-lux">
+                <div class="form-group-lux form-group-lux--centered">
                     <label>¿Asistirás a nuestra boda?</label>
-                    <div class="radio-group-lux">
+                    <div class="radio-group-lux radio-group-lux--centered">
                         <label class="radio-lux">
                             <input type="radio" name="confirm" value="si" required id="rsvp-yes">
                             <span class="radio-custom-lux"></span>
@@ -525,9 +522,9 @@
         <!-- ─── FOOTER ─── -->
         <footer class="section-footer-luxury">
             <div class="footer-monogram-lux">
-                <span>J <em>&</em> A</span>
+                <span>J <em>&</em> <span class="footer-monogram-a">A</span></span>
             </div>
-            <p class="footer-hashtag-lux">#JeanYAna</p>
+            <p class="footer-hashtag-lux">#JEANI</p>
             <p class="footer-msg-lux">¡Gracias por ser parte de nuestra historia!</p>
             <div class="footer-date-lux">19 · 12 · 2026</div>
         </footer>
