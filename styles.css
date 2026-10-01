@@ -254,13 +254,29 @@ button {
 
 .reveal {
     opacity: 0;
-    transform: translateY(28px);
-    transition: opacity 0.75s ease, transform 0.75s ease;
+    transform: translateY(20px);
+    transition: opacity 0.9s cubic-bezier(0.2, 0.9, 0.3, 1), transform 0.9s cubic-bezier(0.2, 0.9, 0.3, 1);
+    will-change: opacity, transform;
 }
 
 .reveal.revealed {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* ── Transición pausada y muy suave para las fotos (aparición con calma) ── */
+.section-scattered-photo.reveal,
+.journey-photo-hero.reveal {
+    opacity: 0;
+    transform: translateY(10px) scale(0.992);
+    transition: opacity 1.8s cubic-bezier(0.25, 1, 0.5, 1), transform 1.8s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: opacity, transform;
+}
+
+.section-scattered-photo.reveal.revealed,
+.journey-photo-hero.reveal.revealed {
+    opacity: 1;
+    transform: translateY(0) scale(1);
 }
 
 /* ══════════════════════════════════════════════════════════════
