@@ -557,7 +557,7 @@ button {
 .section-journey {
     position: relative;
     background: var(--white);
-    padding: 0 0 64px;
+    padding: 48px 0 64px;
     overflow: hidden;
 }
 
@@ -831,49 +831,64 @@ button {
     text-align: center;
 }
 
-.event-details-btn-single {
-    width: 100%;
-    margin-top: 4px;
-    margin-bottom: 2px;
-}
-
-.event-details-btns {
+.event-details-actions {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 12px;
+    max-width: 380px;
+    margin: 28px auto 0;
     width: 100%;
-    margin-top: 4px;
+    padding: 0 12px;
+}
+
+@media (min-width: 480px) {
+    .event-details-actions {
+        flex-direction: row;
+        gap: 14px;
+        max-width: 420px;
+    }
+
+    .event-details-actions .btn-event-detail {
+        flex: 1;
+    }
 }
 
 .btn-event-detail {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    padding: 9px 12px;
+    gap: 8px;
+    padding: 13px 20px;
     background: var(--gold);
     color: #fff;
     font-family: var(--font-sans);
-    font-size: 0.58rem;
+    font-size: 0.76rem;
     font-weight: 600;
-    letter-spacing: 1.5px;
+    letter-spacing: 1.6px;
     text-transform: uppercase;
-    border-radius: 2px;
-    transition: background var(--transition);
+    border-radius: 4px;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(201, 165, 80, 0.22);
+    transition: all var(--transition);
 }
 
 .btn-event-detail:hover {
     background: var(--gold-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(201, 165, 80, 0.32);
 }
 
 .btn-event-detail--outline {
-    background: transparent;
+    background: #ffffff;
     border: 1.5px solid var(--gold);
     color: var(--gold-dark);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .btn-event-detail--outline:hover {
     background: rgba(201, 165, 80, 0.08);
+    border-color: var(--gold-dark);
+    color: var(--gold-dark);
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -939,17 +954,19 @@ button {
 
 .parent-luxury-names {
     font-family: var(--font-script);
-    font-size: clamp(1.6rem, 6vw, 2rem);
+    font-size: clamp(2.1rem, 7vw, 2.7rem);
     color: var(--text-dark);
-    line-height: 1.6;
+    line-height: 1.45;
     font-style: normal;
 }
 
 .parent-luxury-names span {
     font-family: var(--font-script);
-    font-size: 1.6rem;
+    font-size: clamp(1.8rem, 6vw, 2.3rem);
     color: var(--gold-dark);
     font-style: normal;
+    display: inline-block;
+    margin: 2px 0;
 }
 
 .parents-ornament {
@@ -2857,7 +2874,7 @@ button {
 }
 
 .parent-luxury-names {
-    font-size: clamp(1.15rem, 4.5vw, 1.35rem);
+    font-size: clamp(2.1rem, 7vw, 2.7rem);
     color: var(--text-dark);
 }
 
