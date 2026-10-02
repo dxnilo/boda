@@ -98,14 +98,15 @@
         if (guestCode && sb) {
             try {
                 const { data, error } = await sb.from('guests').select('*').eq('codigo', guestCode).single();
-                if (data) {
+                if (data && data.estado !== 'Eliminado') {
                     guestData = { ...data };
 
                     // Fetch companions if primary guest
                     if (!guestData.es_acompanante) {
                         const { data: compData } = await sb.from('guests')
                             .select('*')
-                            .eq('acompanante_de', guestData.nombre);
+                            .eq('acompanante_de', guestData.nombre)
+                            .neq('estado', 'Eliminado');
                         if (compData) {
                             guestCompanions = compData;
                         }
