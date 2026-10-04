@@ -602,19 +602,19 @@
                     return;
                 }
 
-                const newStatus = 'Confirmado';
                 const notes = `Confirmados (${count}/${allInvitationMembers.length}): ${confirmedNames.join(', ')} | Mensaje: ${message}`;
 
                 if (guestData.codigo && sb) {
-                    // Update primary guest
+                    // El titular se confirma solo si su tarjeta fue seleccionada
+                    const primarySelected = confirmedNames.includes(guestData.nombre);
                     await sb.from('guests').update({
-                        estado: newStatus,
+                        estado: primarySelected ? 'Confirmado' : 'Declinado',
                         cupos: count,
                         restricciones: notes,
                         confirmado_en: new Date().toISOString()
                     }).eq('codigo', guestData.codigo);
 
-                    // Update each real companion (codes like AJ01-C1, not virtual -X slots)
+                    // Cada acompañante real según si fue seleccionado
                     for (const member of allInvitationMembers) {
                         if (member.isPrimary) continue;
                         if (member.codigo && !member.codigo.includes('-X')) {
