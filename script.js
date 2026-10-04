@@ -606,21 +606,46 @@
                 const notes = `Confirmados (${count}/${allInvitationMembers.length}): ${confirmedNames.join(', ')} | Mensaje: ${message}`;
 
                 if (guestData.codigo && sb) {
+                    // Update primary guest
                     await sb.from('guests').update({
                         estado: newStatus,
                         cupos: count,
                         restricciones: notes,
                         confirmado_en: new Date().toISOString()
                     }).eq('codigo', guestData.codigo);
+
+                    // Update each real companion (codes like AJ01-C1, not virtual -X slots)
+                    for (const member of allInvitationMembers) {
+                        if (member.isPrimary) continue;
+                        if (member.codigo && !member.codigo.includes('-X')) {
+                            const isConfirmed = confirmedNames.includes(member.nombre);
+                            await sb.from('guests').update({
+                                estado: isConfirmed ? 'Confirmado' : 'Declinado',
+                                confirmado_en: new Date().toISOString()
+                            }).eq('codigo', member.codigo);
+                        }
+                    }
                 }
             } else {
                 if (guestData.codigo && sb) {
+                    // Decline primary guest
                     await sb.from('guests').update({
                         estado: 'Declinado',
                         cupos: 0,
                         restricciones: messageNo ? `Mensaje: ${messageNo}` : 'No podrá asistir',
                         confirmado_en: new Date().toISOString()
                     }).eq('codigo', guestData.codigo);
+
+                    // Also decline all real companions
+                    for (const member of allInvitationMembers) {
+                        if (member.isPrimary) continue;
+                        if (member.codigo && !member.codigo.includes('-X')) {
+                            await sb.from('guests').update({
+                                estado: 'Declinado',
+                                confirmado_en: new Date().toISOString()
+                            }).eq('codigo', member.codigo);
+                        }
+                    }
                 }
             }
 
