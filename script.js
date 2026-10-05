@@ -143,7 +143,26 @@
         }
 
         if ($guestName) {
-            $guestName.textContent = guestData.nombre;
+            // Build full name list after allInvitationMembers is ready
+            const allNames = allInvitationMembers.map(m => m.nombre);
+            if (allNames.length > 1) {
+                // Join with & for last name, commas for others
+                const lastName = allNames[allNames.length - 1];
+                const rest = allNames.slice(0, -1).join(', ');
+                $guestName.textContent = `${rest} & ${lastName}`;
+
+                // Update salutation to plural
+                const greetingP = $guestName.closest('p');
+                if (greetingP) {
+                    greetingP.childNodes.forEach(node => {
+                        if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
+                            node.textContent = 'Queridos ';
+                        }
+                    });
+                }
+            } else {
+                $guestName.textContent = guestData.nombre;
+            }
         }
 
         if ($guestPassesCount) {
